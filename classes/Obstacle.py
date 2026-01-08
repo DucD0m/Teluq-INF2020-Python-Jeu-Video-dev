@@ -1,16 +1,11 @@
-import pygame, random
+import random
 
 class Obstacle:
 
-    def __init__(self, width, height, window_width, start_y, spacing, image_path):
-        self.width = width
-        self.height = height
-        self.image = pygame.transform.scale(
-            pygame.image.load(image_path),
-            (self.width, self.height)
-        )
+    def __init__(self, window_width, start_y, spacing, image):
+        self.image = image
         self.min = 4*spacing + 70
-        self.max = window_width - self.width - 4*spacing
+        self.max = window_width - self.image.get_width() - 4*spacing
         self.x = random.randint(self.min, self.max)
         self.y = start_y
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
@@ -18,8 +13,8 @@ class Obstacle:
 
     def update_rect(self):
         self.rect.topleft = (self.x + 10, self.y + 10)
-        self.rect.width = self.width - 20
-        self.rect.height = self.height - 20
+        self.rect.width = self.image.get_width() - 20
+        self.rect.height = self.image.get_height() - 20
 
     def draw(self, window, start_y, speed):
         self.y -= speed

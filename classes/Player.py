@@ -1,8 +1,9 @@
 import pygame
 
 class Player:
-    def __init__(self, window_width, right_limit, left_limit):
+    def __init__(self, window_width, window_height, right_limit, left_limit):
         self.size = 100
+        self.height_limit = window_height
         self.right_limit = right_limit
         self.left_limit = left_limit
         self.starting_x = window_width // 2 - self.size // 2
@@ -46,7 +47,7 @@ class Player:
         self.angle = 0.0
         self.scale = 1.0
 
-    def handle_input(self, keys):
+    def input(self, keys):
         """Gère le mouvement horizontal et le saut"""
         if not self.jumping:
             if keys[pygame.K_LEFT]:
@@ -76,6 +77,9 @@ class Player:
         # Limites horizontales
         self.x += self.dx
         self.x = max(self.left_limit, min(self.x, self.right_limit))
+
+        # Limites verticales
+        self.y = max(0, min(self.y, self.height_limit - self.size))
 
     def jump(self):
         if not self.jumping:
@@ -119,9 +123,9 @@ class Player:
 
     def update_rect(self):
         """Met à jour la hitbox"""
-        self.rect.topleft = (self.x + 10, self.y + 10)
-        self.rect.width = self.size - 20
-        self.rect.height = self.size - 20
+        self.rect.topleft = (self.x + 5, self.y + 5)
+        self.rect.width = self.size - 10
+        self.rect.height = self.size - 10
 
     def check_collision(self, rect, can_jump):
         self.update_rect()
