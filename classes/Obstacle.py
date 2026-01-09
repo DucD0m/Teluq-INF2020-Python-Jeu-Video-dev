@@ -2,7 +2,7 @@ import random
 
 class Obstacle:
 
-    def __init__(self, window_width, start_y, spacing, image):
+    def __init__(self, window_width, start_y, spacing, image, jump_allowed):
         self.image = image
         self.min = 4*spacing + 70
         self.max = window_width - self.image.get_width() - 4*spacing
@@ -10,6 +10,7 @@ class Obstacle:
         self.y = start_y
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
         self.cleared = False
+        self.jump_allowed = jump_allowed
 
     def update_rect(self):
         self.rect.topleft = (self.x + 10, self.y + 10)

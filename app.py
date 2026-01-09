@@ -1,22 +1,22 @@
-from classes.Game import Game
+from classes.Game import Game, Window
 from classes.Player import Player
 from classes.Obstacle import Obstacle
 
 # Initialiser de la partie
-game = Game(1400, 750)
-
-# Créer le joueur
-player = Player(game.width, game.height, game.right_limit, game.left_limit)
+game = Game()
+window = Window(1400, 750)
+player = Player(window.width)
 
 #Obstacles
 num_rocks = 2
 rocks = []
 for i in range(num_rocks):
     obs = Obstacle(
-        game.width,
-        game.height + i * 100 * game.speed - 100,
-        game.spacing,
-        game.rock
+        window.width,
+        window.height + i * 100 * game.speed - 100,
+        window.spacing,
+        window.rock,
+        True
     )
     rocks.append(obs)
 
@@ -24,57 +24,60 @@ num_trees = 3
 trees = []
 for i in range(num_trees):
     obs = Obstacle(
-        game.width,
-        game.height + i * 50 * game.speed,
-        game.spacing,
-        game.tree
+        window.width,
+        window.height + i * 50 * game.speed,
+        window.spacing,
+        window.tree,
+        False
     )
     trees.append(obs)
 
 # Boucle de jeu
 quit = False
 while not quit:
-
     dt = game.clock.get_time() / 1000
 
-    quit = game.check_quit_event()
+    if (quit := game.check_quit_event()):
+        continue
 
     game.update_key_pressed()
 
     if not game.started:
-        game.show_start_screen()
+        window.show_start_screen()
+        game.check_game_started()
 
     elif player.lives == 0:
-        game.show_game_over_screen(player, dt)
+        window.show_game_over_screen(game, player)
+        game.check_restart_game(player, dt)
 
     else:
-        game.window.fill(game.snow_color)
+        window.display.fill(window.snow_color)
 
-        player.input(game.keys)
+        player.input(game.keys, window)
         player.update(dt)
 
         # Collision et passages
         for obs in rocks:
             obs.update_rect()
-            player.check_collision(obs.rect, True)
+            game.check_collision(window, player, obs)
 
         for obs in trees:
             obs.update_rect()
-            player.check_collision(obs.rect, False)
-            player.check_cleared(obs)
+            game.check_collision(window, player, obs)
+            game.check_obstacle_cleared(player, obs)
 
         # Dessin du joueur (clignotement si invincible)
-        player.draw(game.window)
+        player.draw(window.display)
 
         # Affichage d'obstacles
         for i, obs in enumerate(rocks):
-            obs.draw(game.window, game.height + i * 100 * game.speed -100, game.speed)
+            obs.draw(window.display, window.height + i * 100 * game.speed -100, game.speed)
 
         for i, obs in enumerate(trees):
-            obs.draw(game.window, game.height + i * 50 * game.speed, game.speed)
+            obs.draw(window.display, window.height + i * 50 * game.speed, game.speed)
 
-        game.update_status(player)
-        game.update_side_limit_fillers()
+        window.update_status(game, player)
+        window.update_side_limit_fillers(game.speed)
 
     game.flip()
     game.clock.tick(60)

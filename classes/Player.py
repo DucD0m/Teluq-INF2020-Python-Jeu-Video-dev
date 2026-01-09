@@ -1,11 +1,8 @@
 import pygame
 
 class Player:
-    def __init__(self, window_width, window_height, right_limit, left_limit):
+    def __init__(self, window_width):
         self.size = 100
-        self.height_limit = window_height
-        self.right_limit = right_limit
-        self.left_limit = left_limit
         self.starting_x = window_width // 2 - self.size // 2
         self.starting_y = self.size + 20
         self.x = self.starting_x
@@ -47,7 +44,7 @@ class Player:
         self.angle = 0.0
         self.scale = 1.0
 
-    def input(self, keys):
+    def input(self, keys, window):
         """Gère le mouvement horizontal et le saut"""
         if not self.jumping:
             if keys[pygame.K_LEFT]:
@@ -76,10 +73,10 @@ class Player:
 
         # Limites horizontales
         self.x += self.dx
-        self.x = max(self.left_limit, min(self.x, self.right_limit))
+        self.x = max(window.left_limit, min(self.x, window.right_limit))
 
         # Limites verticales
-        self.y = max(0, min(self.y, self.height_limit - self.size))
+        self.y = max(0, min(self.y, window.height - self.size))
 
     def jump(self):
         if not self.jumping:
@@ -88,6 +85,8 @@ class Player:
             self.jump_x = self.x
 
     def update(self, dt):
+        self.update_rect()
+
         # Gestion invincibilité
         if self.invincible:
             self.invincible_time += dt
@@ -126,30 +125,6 @@ class Player:
         self.rect.topleft = (self.x + 5, self.y + 5)
         self.rect.width = self.size - 10
         self.rect.height = self.size - 10
-
-    def check_collision(self, rect, can_jump):
-        self.update_rect()
-
-        if self.rect.colliderect(rect) and not self.invincible and (not self.jumping or not can_jump):
-            self.lives -= 1
-            self.invincible = True
-            self.invincible_time = 0.0
-
-        elif self.rect.colliderect(rect) and not self.invincible and can_jump and self.jumping and not self.stop_points:
-            self.points += 100
-            self.stop_points = True
-            self.stop_points_time = 0.0
-
-        if (self.x <= self.left_limit or self.x >= self.right_limit) and not self.invincible:
-            self.lives -= 1
-            self.invincible = True
-            self.invincible_time = 0.0
-
-    def check_cleared(self, obs):
-        if self.y > obs.y:
-            if obs.cleared == False:
-                self.points += 25
-                obs.cleared = True
 
     def draw(self, window):
         transformed = self.get_transformed_image()
