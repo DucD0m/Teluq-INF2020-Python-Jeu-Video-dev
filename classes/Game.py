@@ -114,23 +114,37 @@ class Window:
 class Game:
 
     def __init__(self):
+        pygame.mixer.pre_init(44100, -16, 2, 512)
         if not pygame.get_init():
             pygame.init()
+        pygame.mixer.init()
         self.started = False
         self.clock = pygame.time.Clock()
         self.level = 1
         self.speed = 2
         self.keys = ""
+        self.sound_points = pygame.mixer.Sound("audio/points.wav")
+        self.sound_doh = pygame.mixer.Sound("audio/d-oh.wav")
+        self.sound_killed = pygame.mixer.Sound("audio/killed.wav")
 
     def check_game_started(self):
         if self.keys[pygame.K_RETURN]:
             self.started = True
+
+            # Pandemia by MaxKoMusic | https://maxkomusic.com/
+            # Music promoted by https://www.chosic.com/free-music/all/
+            # Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+            # https://creativecommons.org/licenses/by-sa/3.0/
+            pygame.mixer.music.load("audio/Pandemia(chosic.com).mp3")
+            pygame.mixer.music.play(-1)  # boucle infinie
+
 
     def check_restart_game(self, player, dt):
         if self.keys[pygame.K_RETURN]:
             self.level = 1
             player.reset()
             player.update(dt)
+            pygame.mixer.music.unpause()
 
     def update_key_pressed(self):
         self.keys = pygame.key.get_pressed()
@@ -140,22 +154,34 @@ class Game:
             player.lives -= 1
             player.invincible = True
             player.invincible_time = 0.0
+            if player.lives == 0:
+                self.sound_killed.play()
+                pygame.mixer.music.pause()
+            else:
+                self.sound_doh.play()
 
         elif player.rect.colliderect(obstacle.rect) and not player.invincible and obstacle.jump_allowed and player.jumping and not player.stop_points:
             player.points += 100
             player.stop_points = True
             player.stop_points_time = 0.0
+            self.sound_points.play()
 
         if (player.x <= window.left_limit or player.x >= window.right_limit) and not player.invincible:
             player.lives -= 1
             player.invincible = True
             player.invincible_time = 0.0
+            if player.lives == 0:
+                self.sound_killed.play()
+                pygame.mixer.music.pause()
+            else:
+                self.sound_doh.play()
 
     def check_obstacle_cleared(self, player, obs):
         if player.y > obs.y:
             if obs.cleared == False:
                 player.points += 25
                 obs.cleared = True
+                self.sound_points.play()
 
     def check_quit_event(self):
         for event in pygame.event.get():
