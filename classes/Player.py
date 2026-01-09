@@ -122,9 +122,9 @@ class Player:
 
     def update_rect(self):
         """Met à jour la hitbox"""
-        self.rect.topleft = (self.x + 5, self.y + 5)
-        self.rect.width = self.size - 10
-        self.rect.height = self.size - 10
+        self.rect.topleft = (self.x + 10, self.y + 10)
+        self.rect.width = self.size - 20
+        self.rect.height = self.size - 20
 
     def draw(self, window):
         transformed = self.get_transformed_image()
