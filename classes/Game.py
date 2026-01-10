@@ -155,6 +155,7 @@ class Game:
             self.level = 1
             pygame.mixer.music.unpause()
             return True
+        return False
 
     def update_key_pressed(self):
         self.keys = pygame.key.get_pressed()
