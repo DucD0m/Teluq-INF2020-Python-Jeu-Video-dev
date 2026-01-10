@@ -14,6 +14,7 @@ class Window:
         self.left_limit = 4 * self.spacing - 50
         self.right_limit = self.width - 4 * self.spacing - 50
         self.white = (255, 255, 255)
+        self.black = (0, 0, 0)
         self.blue = (50, 50, 255)
         self.snow_color = (200, 200, 255)
         self.red = (255, 0, 0)
@@ -100,15 +101,25 @@ class Window:
             if self.dx <= 0:
                 self.dx += self.spacing
 
-    def update_status(self, game, player):
-        game.level = player.points // 1000 + 1
-        game.speed = game.level + 1
-        level_text =self.font.render(f"Niveau : {game.level}", True, (0, 0, 0))
-        lives_text =self.font.render(f"Vies : {player.lives}", True, (0, 0, 0))
-        points_text =self.font.render(f"Points : {player.points}", True, (0, 0, 0))
-        self.display.blit(level_text, (300, 20))
-        self.display.blit(lives_text, (600, 20))
-        self.display.blit(points_text, (900, 20))
+    def update_window_status(self, game, player):
+        self.show_text(
+            f"Niveau : {game.level}",
+            self.width // 4,
+            20,
+            self.black
+        )
+        self.show_text(
+            f"Vies : {player.lives}",
+            self.width // 2,
+            20,
+            self.black
+        )
+        self.show_text(
+            f"Points : {player.points}",
+            self.width*3 // 4,
+            20,
+            self.black
+        )
 
 
 class Game:
@@ -139,12 +150,11 @@ class Game:
             pygame.mixer.music.play(-1)  # boucle infinie
 
 
-    def check_restart_game(self, player, dt):
+    def check_restart_game(self):
         if self.keys[pygame.K_RETURN]:
             self.level = 1
-            player.reset()
-            player.update(dt)
             pygame.mixer.music.unpause()
+            return True
 
     def update_key_pressed(self):
         self.keys = pygame.key.get_pressed()
@@ -182,6 +192,10 @@ class Game:
                 player.points += 25
                 obs.cleared = True
                 self.sound_points.play()
+
+    def update_game_status(self, game, player):
+        game.level = player.points // 1000 + 1
+        game.speed = game.level + 1
 
     def check_quit_event(self):
         for event in pygame.event.get():

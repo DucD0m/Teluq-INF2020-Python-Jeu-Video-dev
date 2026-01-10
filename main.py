@@ -49,7 +49,9 @@ def main():
 
         elif player.lives == 0:
             window.show_game_over_screen(game, player)
-            game.check_restart_game(player, dt)
+            if (restart := game.check_restart_game()):
+                player.reset()
+                player.update(dt)
 
         else:
             window.display.fill(window.snow_color)
@@ -77,7 +79,8 @@ def main():
             for i, obs in enumerate(trees):
                 obs.draw(window.display, window.height + i * 50 * game.speed, game.speed)
 
-            window.update_status(game, player)
+            game.update_game_status(game, player)
+            window.update_window_status(game, player)
             window.update_side_limit_fillers(game.speed)
 
         game.flip()
