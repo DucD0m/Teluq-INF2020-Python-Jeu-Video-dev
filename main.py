@@ -67,7 +67,9 @@ def main():
             for obs in trees:
                 obs.update_rect()
                 game.check_collision(window, player, obs)
-                game.check_obstacle_cleared(player, obs)
+                if(cleared := game.check_obstacle_cleared(player, obs)):
+                    obs.set_cleared()
+                    player.add_obstacle_cleared_points()
 
             # Dessin du joueur (clignotement si invincible)
             player.draw(window.display)
@@ -79,7 +81,7 @@ def main():
             for i, obs in enumerate(trees):
                 obs.draw(window.display, window.height + i * 50 * game.speed, game.speed)
 
-            game.update_game_status(game, player)
+            game.update_game_status(player)
             window.update_window_status(game, player)
             window.update_side_limit_fillers(game.speed)
 

@@ -17,6 +17,9 @@ class Obstacle:
         self.rect.width = self.image.get_width() - 20
         self.rect.height = self.image.get_height() - 20
 
+    def set_cleared(self):
+        self.cleared = True
+
     def draw(self, window, start_y, speed):
         self.y -= speed
         if self.y < 0:

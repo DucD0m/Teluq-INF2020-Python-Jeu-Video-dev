@@ -155,7 +155,8 @@ class Game:
             self.level = 1
             pygame.mixer.music.unpause()
             return True
-        return False
+        else:
+            return False
 
     def update_key_pressed(self):
         self.keys = pygame.key.get_pressed()
@@ -188,21 +189,25 @@ class Game:
                 self.sound_doh.play()
 
     def check_obstacle_cleared(self, player, obs):
-        if player.y > obs.y:
-            if obs.cleared == False:
-                player.points += 25
-                obs.cleared = True
-                self.sound_points.play()
+        if player.y <= obs.y or obs.cleared:
+            return False
 
-    def update_game_status(self, game, player):
-        game.level = player.points // 1000 + 1
-        game.speed = game.level + 1
+        self.sound_points.play()
+        return True
+
+
+    def update_game_status(self, player):
+        self.level = player.points // 1000 + 1
+        self.speed = self.level + 1
 
     def check_quit_event(self):
+        quit_event = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return True
-        return False
+                quit_event = True
+
+        return quit_event
 
     def flip(self):
         pygame.display.flip()
