@@ -129,6 +129,16 @@ class Player:
     def add_obstacle_cleared_points(self):
         self.points += 25
 
+    def obstacle_jumped(self):
+        self.points += 100
+        self.stop_points = True
+        self.stop_points_time = 0.0
+
+    def obstacle_hit(self):
+        self.lives -= 1
+        self.invincible = True
+        self.invincible_time = 0.0
+
     def draw(self, window):
         transformed = self.get_transformed_image()
         rect = transformed.get_rect(center=(self.x + self.size//2, self.y + self.size//2))

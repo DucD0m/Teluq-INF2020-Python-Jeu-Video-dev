@@ -45,11 +45,11 @@ def main():
 
         if not game.started:
             window.show_start_screen()
-            game.check_game_started()
+            game.game_started()
 
         elif player.lives == 0:
             window.show_game_over_screen(game, player)
-            if (restart := game.check_restart_game()):
+            if (restart := game.restart_game()):
                 player.reset()
                 player.update(dt)
 
@@ -62,11 +62,22 @@ def main():
             # Collision et passages
             for obs in rocks:
                 obs.update_rect()
-                game.check_collision(window, player, obs)
+                collision = game.check_collision(window, player, obs)
+
+                if collision == "jumped":
+                    player.obstacle_jumped()
+                elif collision == "hit":
+                    player.obstacle_hit()
 
             for obs in trees:
                 obs.update_rect()
-                game.check_collision(window, player, obs)
+                collision = game.check_collision(window, player, obs)
+
+                if collision == "jumped":
+                    player.obstacle_jumped()
+                elif collision == "hit":
+                    player.obstacle_hit()
+
                 if(cleared := game.check_obstacle_cleared(player, obs)):
                     obs.set_cleared()
                     player.add_obstacle_cleared_points()
