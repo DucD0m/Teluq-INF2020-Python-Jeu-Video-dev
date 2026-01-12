@@ -101,7 +101,7 @@ class Window:
             if self.dx <= 0:
                 self.dx += self.spacing
 
-    def update_window_status(self, game, player):
+    def update_status(self, game, player):
         self.show_text(
             f"Niveau : {game.level}",
             self.width // 4,

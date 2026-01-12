@@ -16,7 +16,6 @@ def main():
     for i in range(rocks):
         obs = Obstacle(
             window.width,
-            # window.height + i * 100 * game.speed - 100,
             window.height + random.randint(0,window.height),
             window.spacing,
             window.rock,
@@ -28,7 +27,6 @@ def main():
     for i in range(trees):
         obs = Obstacle(
             window.width,
-            # window.height + i * 50 * game.speed,
             window.height + random.randint(0,window.height),
             window.spacing,
             window.tree,
@@ -77,16 +75,15 @@ def main():
 
                 if(cleared := game.check_obstacle_cleared(player, obs)):
                     obs.set_cleared()
-                    player.obstacle_cleared()
-                    game.obstacle_cleared()
+                    if not player.invincible:
+                        player.obstacle_cleared()
+                        game.obstacle_cleared()
+
+                obs.draw(window.display, window.height + random.randint(0,window.height), game.speed)
 
             # Dessin du joueur (clignotement si invincible)
             player.draw(window.display)
-
-            for i, obs in enumerate(obstacles):
-                obs.draw(window.display, window.height + random.randint(0,window.height), game.speed)
-
-            window.update_window_status(game, player)
+            window.update_status(game, player)
             window.update_side_limit_fillers(game.speed)
 
         game.flip()

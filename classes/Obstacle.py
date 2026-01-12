@@ -9,13 +9,13 @@ class Obstacle:
         self.x = random.randint(self.min, self.max)
         self.y = start_y
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
+        self.rect.width = self.image.get_width() - 20
+        self.rect.height = self.image.get_height() - 20
         self.cleared = False
         self.jump_allowed = jump_allowed
 
     def update_rect(self):
         self.rect.topleft = (self.x + 10, self.y + 10)
-        self.rect.width = self.image.get_width() - 20
-        self.rect.height = self.image.get_height() - 20
 
     def set_cleared(self):
         self.cleared = True
