@@ -2,12 +2,10 @@ import random
 
 class Obstacle:
 
-    def __init__(self, window_width, start_y, spacing, image, jump_allowed):
+    def __init__(self, window_height, window_left_limit, window_right_limit, image, jump_allowed):
         self.image = image
-        self.min = 4*spacing + 70
-        self.max = window_width - self.image.get_width() - 4*spacing
-        self.x = random.randint(self.min, self.max)
-        self.y = start_y
+        self.y = window_height + random.randint(0,window_height)
+        self.x = random.randint(window_left_limit + 50, window_right_limit - 50)
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
         self.rect.width = self.image.get_width() - 20
         self.rect.height = self.image.get_height() - 20
@@ -20,10 +18,9 @@ class Obstacle:
     def set_cleared(self):
         self.cleared = True
 
-    def draw(self, window, start_y, speed):
+    def update_position(self,window_height, window_left_limit, window_right_limit, speed):
         self.y -= speed
         if self.y < 0:
             self.cleared = False
-            self.y = start_y
-            self.x = random.randint(self.min, self.max)
-        window.blit(self.image, (self.x, self.y))
+            self.y = window_height + random.randint(0,window_height)
+            self.x = random.randint(window_left_limit + 50, window_right_limit - 50)

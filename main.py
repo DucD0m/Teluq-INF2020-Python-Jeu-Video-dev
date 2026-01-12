@@ -13,23 +13,23 @@ def main():
 
     #Obstacles
     obstacles = []
-    rocks = 2
+    rocks = 3
     for i in range(rocks):
         obs = Obstacle(
-            window.width,
-            window.height + random.randint(0,window.height),
-            window.spacing,
+            window.height,
+            window.left_limit,
+            window.right_limit,
             window.rock,
             True
         )
         obstacles.append(obs)
 
-    trees = 3
+    trees = 4
     for i in range(trees):
         obs = Obstacle(
-            window.width,
-            window.height + random.randint(0,window.height),
-            window.spacing,
+            window.height,
+            window.left_limit,
+            window.right_limit,
             window.tree,
             False
         )
@@ -80,7 +80,8 @@ def main():
                         player.obstacle_cleared()
                         game.obstacle_cleared()
 
-                obs.draw(window.display, window.height + random.randint(0,window.height), game.speed)
+                obs.update_position(window.height, window.left_limit, window.right_limit, game.speed)
+                window.draw(obs.image, obs.x, obs.y)
 
             # Dessin du joueur (clignotement si invincible)
             player.draw(window.display)
