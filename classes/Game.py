@@ -70,8 +70,8 @@ class Game:
     def obstacle_jumped(self):
         self.sound_woohoo.play()
 
-    def update_status(self, player):
-        self.level = player.points // 1000 + 1
+    def update_status(self, player_points):
+        self.level = player_points // 1000 + 1
         self.speed = self.level + 1
 
     def check_quit_event(self):

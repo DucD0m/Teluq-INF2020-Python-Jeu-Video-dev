@@ -1,4 +1,3 @@
-import random
 from classes.Game import Game
 from classes.Window import Window
 from classes.Player import Player
@@ -43,7 +42,7 @@ def main():
         if (quit := game.check_quit_event()):
             continue
 
-        game.update_status(player)
+        game.update_status(player.points)
         game.update_key_pressed()
 
         if not game.started:
@@ -51,7 +50,7 @@ def main():
             game.game_started()
 
         elif player.lives == 0:
-            window.show_game_over_screen(game, player)
+            window.show_game_over_screen(game.level, player.points)
             if (restart := game.restart_game()):
                 player.reset()
                 player.update(dt)

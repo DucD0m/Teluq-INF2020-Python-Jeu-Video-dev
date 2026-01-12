@@ -53,7 +53,7 @@ class Window:
             self.display.blit(self.big_tree,[200,200])
             self.display.blit(self.big_skier,[self.width - 400,200])
 
-    def show_game_over_screen(self, game, player):
+    def show_game_over_screen(self, game_level, player_points):
             self.display.fill(self.red)
 
             self.show_text(
@@ -64,14 +64,14 @@ class Window:
             )
 
             self.show_text(
-                f"Niveau : {game.level}",
+                f"Niveau : {game_level}",
                 self.width // 2,
                 self.height // 2 - 25,
                 self.white
             )
 
             self.show_text(
-                f"Points : {player.points}",
+                f"Points : {player_points}",
                 self.width // 2,
                 self.height // 2 + 25,
                 self.white
@@ -123,4 +123,5 @@ class Window:
         )
 
     def draw(self, image, x, y):
-        self.display.blit(image, (x, y))
+        if y < self.height or y > -image.get_height():
+            self.display.blit(image, (x, y))
