@@ -1,5 +1,6 @@
 import random
-from classes.Game import Game, Window
+from classes.Game import Game
+from classes.Window import Window
 from classes.Player import Player
 from classes.Obstacle import Obstacle
 
