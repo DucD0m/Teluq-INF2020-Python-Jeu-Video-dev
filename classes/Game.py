@@ -135,7 +135,10 @@ class Game:
         self.speed = 2
         self.keys = ""
         self.sound_points = pygame.mixer.Sound("audio/points.wav")
-        self.sound_doh = pygame.mixer.Sound("audio/d-oh.wav")
+            # Sound from https://www.bfxr.net/
+        self.sound_doh = pygame.mixer.Sound("audio/Homer-Doh! - QuickSounds.com.mp3")
+        self.sound_woohoo = pygame.mixer.Sound("audio/WOOHOO! (homer) - QuickSounds.com.mp3")
+            # Sounds from https://quicksounds.com/library/sounds/homer
         self.sound_killed = pygame.mixer.Sound("audio/killed.wav")
         pygame.mixer.music.load("audio/Pandemia(chosic.com).mp3")
             # Pandemia by MaxKoMusic | https://maxkomusic.com/
@@ -161,36 +164,34 @@ class Game:
 
     def check_collision(self, window, player, obstacle):
         if player.rect.colliderect(obstacle.rect) and not player.invincible and (not player.jumping or not obstacle.jump_allowed):
-            if player.lives == 0:
-                self.sound_killed.play()
-                pygame.mixer.music.pause()
-            else:
-                self.sound_doh.play()
             return "hit"
-
         elif player.rect.colliderect(obstacle.rect) and not player.invincible and obstacle.jump_allowed and player.jumping and not player.stop_points:
-            self.sound_points.play()
             return "jumped"
-
         elif (player.x <= window.left_limit or player.x >= window.right_limit) and not player.invincible:
-            if player.lives == 0:
-                self.sound_killed.play()
-                pygame.mixer.music.pause()
-            else:
-                self.sound_doh.play()
             return "hit"
-
         else:
             return False
 
     def check_obstacle_cleared(self, player, obs):
         if player.y <= obs.y or obs.cleared:
             return False
+        else:
+            return True
 
+    def obstacle_hit(self, player_lives):
+        if player_lives == 0:
+            self.sound_killed.play()
+            pygame.mixer.music.pause()
+        else:
+            self.sound_doh.play()
+
+    def obstacle_cleared(self):
         self.sound_points.play()
-        return True
 
-    def update_game_status(self, player):
+    def obstacle_jumped(self):
+        self.sound_woohoo.play()
+
+    def update_status(self, player):
         self.level = player.points // 1000 + 1
         self.speed = self.level + 1
 

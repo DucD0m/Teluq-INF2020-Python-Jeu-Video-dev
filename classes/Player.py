@@ -126,7 +126,7 @@ class Player:
         self.rect.width = self.size - 20
         self.rect.height = self.size - 20
 
-    def add_obstacle_cleared_points(self):
+    def obstacle_cleared(self):
         self.points += 25
 
     def obstacle_jumped(self):

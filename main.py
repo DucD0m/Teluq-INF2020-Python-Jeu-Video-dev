@@ -1,6 +1,8 @@
+import random
 from classes.Game import Game, Window
 from classes.Player import Player
 from classes.Obstacle import Obstacle
+
 
 def main():
     # Initialiser de la partie
@@ -9,29 +11,30 @@ def main():
     player = Player(window.width)
 
     #Obstacles
-    num_rocks = 2
-    rocks = []
-    for i in range(num_rocks):
+    obstacles = []
+    rocks = 2
+    for i in range(rocks):
         obs = Obstacle(
             window.width,
-            window.height + i * 100 * game.speed - 100,
+            # window.height + i * 100 * game.speed - 100,
+            window.height + random.randint(0,window.height),
             window.spacing,
             window.rock,
             True
         )
-        rocks.append(obs)
+        obstacles.append(obs)
 
-    num_trees = 3
-    trees = []
-    for i in range(num_trees):
+    trees = 3
+    for i in range(trees):
         obs = Obstacle(
             window.width,
-            window.height + i * 50 * game.speed,
+            # window.height + i * 50 * game.speed,
+            window.height + random.randint(0,window.height),
             window.spacing,
             window.tree,
             False
         )
-        trees.append(obs)
+        obstacles.append(obs)
 
     # Boucle de jeu
     quit = False
@@ -41,6 +44,7 @@ def main():
         if (quit := game.check_quit_event()):
             continue
 
+        game.update_status(player)
         game.update_key_pressed()
 
         if not game.started:
@@ -59,40 +63,29 @@ def main():
             player.input(game.keys, window)
             player.update(dt)
 
-            # Collision et passages
-            for obs in rocks:
+            for obs in obstacles:
                 obs.update_rect()
                 collision = game.check_collision(window, player, obs)
 
                 if collision == "jumped":
                     player.obstacle_jumped()
+                    game.obstacle_jumped()
+
                 elif collision == "hit":
                     player.obstacle_hit()
-
-            for obs in trees:
-                obs.update_rect()
-                collision = game.check_collision(window, player, obs)
-
-                if collision == "jumped":
-                    player.obstacle_jumped()
-                elif collision == "hit":
-                    player.obstacle_hit()
+                    game.obstacle_hit(player.lives)
 
                 if(cleared := game.check_obstacle_cleared(player, obs)):
                     obs.set_cleared()
-                    player.add_obstacle_cleared_points()
+                    player.obstacle_cleared()
+                    game.obstacle_cleared()
 
             # Dessin du joueur (clignotement si invincible)
             player.draw(window.display)
 
-            # Affichage d'obstacles
-            for i, obs in enumerate(rocks):
-                obs.draw(window.display, window.height + i * 100 * game.speed -100, game.speed)
+            for i, obs in enumerate(obstacles):
+                obs.draw(window.display, window.height + random.randint(0,window.height), game.speed)
 
-            for i, obs in enumerate(trees):
-                obs.draw(window.display, window.height + i * 50 * game.speed, game.speed)
-
-            game.update_game_status(player)
             window.update_window_status(game, player)
             window.update_side_limit_fillers(game.speed)
 
