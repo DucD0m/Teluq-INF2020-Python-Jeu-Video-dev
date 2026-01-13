@@ -1,3 +1,22 @@
+"""
+Module principal pour le jeu Ski Alpin 2D.
+
+Ce module initialise le jeu, la fenêtre, le joueur et les obstacles, puis
+exécute la boucle principale du jeu qui gère :
+    - La gestion des entrées et des événements de sortie
+    - La mise à jour de l'état du jeu et du joueur
+    - La détection de collision et la gestion des obstacles
+    - L'affichage du joueur, des obstacles et de l'interface
+    - Le contrôle du nombre d'images par seconde (60 FPS)
+
+Classes importées :
+    Game : Gestion de l'état du jeu, des entrées, des collisions,
+        des sons, de la musique et du temps.
+    Window : Gestion du rendu à l'écran.
+    Player : Représente le joueur avec ses mouvements,
+        sa logique de saut et ses points.
+    Obstacle : Représente les rochers et arbres que le joueur rencontre.
+"""
 from classes.Game import Game
 from classes.Window import Window
 from classes.Player import Player
@@ -5,6 +24,19 @@ from classes.Obstacle import Obstacle
 
 
 def main():
+    """Initialise et lance la boucle principale du jeu.
+
+    Cette fonction crée les objets du jeu (Game, Window, Player, Obstacle),
+    puis entre dans la boucle principale qui s'occupe de :
+        - Traiter les entrées et vérifier la fermeture du jeu
+        - Mettre à jour l'état du jeu et du joueur
+        - Détecter les collisions et gérer les obstacles
+        - Afficher le joueur, les obstacles et l'interface
+        - Maintenir un taux de rafraîchissement à 60 FPS
+
+    La boucle se termine lorsque l'utilisateur quitte ou que le joueur n'a plus
+    de vies.
+    """
     game = Game()
     window = Window(1400, 750)
     player = Player(
@@ -17,6 +49,7 @@ def main():
     rocks = 3
     trees = 4
 
+    # Création des rochers
     for i in range(rocks):
         obs = Obstacle(
             window.height,
@@ -27,6 +60,7 @@ def main():
         )
         obstacles.append(obs)
 
+    # Création des arbres
     for i in range(trees):
         obs = Obstacle(
             window.height,
@@ -37,10 +71,10 @@ def main():
         )
         obstacles.append(obs)
 
-    # Boucle de jeu
+    # Boucle principale du jeu
     quit = False
     while not quit:
-        dt = game.clock.get_time() / 1000
+        dt = game.clock.get_time() / 1000  # Temps écoulé en secondes
 
         if (quit := game.check_quit_event()):
             continue
@@ -60,6 +94,8 @@ def main():
 
         else:
             window.display.fill(window.snow_color)
+
+            # Mettre à jour le joueur selon les entrées et sa position
             player.input(
                 game.keys,
                 window.height,
@@ -68,6 +104,7 @@ def main():
             )
             player.update(dt)
 
+            # Mettre à jour les obstacles
             for obs in obstacles:
                 obs.update_rect()
                 collision = game.check_collision(window, player, obs)
@@ -80,7 +117,7 @@ def main():
                     player.obstacle_hit()
                     game.obstacle_hit(player.lives)
 
-                if(cleared := game.check_obstacle_cleared(
+                if (cleared := game.check_obstacle_cleared(
                     player.y,
                     obs.y,
                     obs.cleared
@@ -98,14 +135,18 @@ def main():
                 )
                 window.draw(obs.image, obs.x, obs.y)
 
+            # Affichage du joueur, de l'état de la partie
+            # et des arbres en bordure de fenêtre
             window.draw_player(player)
             window.update_status(game.level, player.lives, player.points)
             window.update_side_limit_fillers(game.speed)
 
+        # Mise à jour de l'affichage et contrôle du framerate
         game.flip()
         game.clock.tick(60)
 
     game.quit()
+
 
 if __name__ == '__main__':
     main()
