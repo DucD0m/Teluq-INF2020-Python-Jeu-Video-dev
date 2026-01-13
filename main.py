@@ -27,12 +27,7 @@ def main():
     """Initialise et lance la boucle principale du jeu.
 
     Cette fonction crée les objets du jeu (Game, Window, Player, Obstacle),
-    puis entre dans la boucle principale qui s'occupe de :
-        - Traiter les entrées et vérifier la fermeture du jeu
-        - Mettre à jour l'état du jeu et du joueur
-        - Détecter les collisions et gérer les obstacles
-        - Afficher le joueur, les obstacles et l'interface
-        - Maintenir un taux de rafraîchissement à 60 FPS
+    puis entre dans la boucle principale.
 
     La boucle se termine lorsque l'utilisateur quitte ou que le joueur n'a plus
     de vies.

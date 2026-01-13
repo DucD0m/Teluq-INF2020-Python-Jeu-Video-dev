@@ -20,7 +20,8 @@ class Window:
         self.snow_color = (200, 200, 255)
         self.red = (255, 0, 0)
         self.font_default = pygame.font.SysFont(None, 36)
-        self.font = pygame.font.Font("fonts/PressStart2P-Regular.ttf", 18)
+        self.font_retro = pygame.font.Font("fonts/PressStart2P-Regular/PressStart2P-Regular.ttf", 18)
+        self.font_snow = pygame.font.Font("fonts/ice-and-snow-font/IceAndsnowNormal-2ve8.ttf", 216)
         self.big_skier = pygame.transform.scale(pygame.image.load("images/Skier-PNG-Photos.png"), (200, 200))
         self.big_tree = pygame.transform.scale(pygame.image.load("images/Winter-Tree-PNG-File.png"), (200, 200))
         self.skier_left = pygame.transform.scale(pygame.image.load("images/Skier-PNG-Photos-sm.png"), (100, 100))
@@ -30,8 +31,8 @@ class Window:
         self.display = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Ski Alpin 2D")
 
-    def show_text(self, text, x, y, color):
-            text_render = self.font.render(text, True, color)
+    def show_text(self, text, x, y, color, font):
+            text_render = font.render(text, True, color)
             text_rect = text_render.get_rect(center=(x, y))
             self.display.blit(text_render, text_rect)
 
@@ -42,18 +43,20 @@ class Window:
                 "SKI ALPIN 2D",
                 self.width // 2,
                 self.height // 3,
-                self.white
+                self.white,
+                self.font_snow
             )
 
             self.show_text(
                 "Appuyer sur RETOUR pour débuter",
                 self.width // 2,
                 self.height*2 // 3,
-                self.white
+                self.white,
+                self.font_retro
             )
 
-            self.display.blit(self.big_tree,[200,200])
-            self.display.blit(self.big_skier,[self.width - 400,200])
+            self.display.blit(self.big_tree,[100,self.height // 2])
+            self.display.blit(self.big_skier,[self.width - 300,self.height // 2])
 
     def show_game_over_screen(self, game_level, player_points):
             self.display.fill(self.red)
@@ -62,28 +65,32 @@ class Window:
                 "LA PARTIE EST TERMINÉE",
                 self.width // 2,
                 self.height // 4,
-                self.white
+                self.white,
+                self.font_retro
             )
 
             self.show_text(
                 f"Niveau : {game_level}",
                 self.width // 2,
                 self.height // 2 - 25,
-                self.white
+                self.white,
+                self.font_retro
             )
 
             self.show_text(
                 f"Points : {player_points}",
                 self.width // 2,
                 self.height // 2 + 25,
-                self.white
+                self.white,
+                self.font_retro
             )
 
             self.show_text(
                 "Appuyer sur RETOUR pour recommencer",
                 self.width // 2,
                 self.height*2.5 // 3,
-                self.white
+                self.white,
+                self.font_retro
             )
 
             self.display.blit(self.big_tree,[200,200])
@@ -109,19 +116,22 @@ class Window:
             f"Niveau : {game_level}",
             self.width // 4,
             20,
-            self.black
+            self.black,
+            self.font_retro
         )
         self.show_text(
             f"Vies : {player_lives}",
             self.width // 2,
             20,
-            self.black
+            self.black,
+            self.font_retro
         )
         self.show_text(
             f"Points : {player_points}",
             self.width*3 // 4,
             20,
-            self.black
+            self.black,
+            self.font_retro
         )
 
     def draw(self, image, x, y):
