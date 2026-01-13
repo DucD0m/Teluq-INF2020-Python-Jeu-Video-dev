@@ -13,17 +13,24 @@ class Game:
         self.level = 1
         self.speed = 2
         self.keys = ""
-        self.sound_points = pygame.mixer.Sound("audio/points.wav")
-            # Sound from https://www.bfxr.net/
-        self.sound_doh = pygame.mixer.Sound("audio/Homer-Doh! - QuickSounds.com.mp3")
-        self.sound_woohoo = pygame.mixer.Sound("audio/WOOHOO! (homer) - QuickSounds.com.mp3")
-            # Sounds from https://quicksounds.com/library/sounds/homer
         self.sound_killed = pygame.mixer.Sound("audio/killed.wav")
+
+        # Sound from https://www.bfxr.net/
+        self.sound_points = pygame.mixer.Sound("audio/points.wav")
+
+        # Sounds from https://quicksounds.com/library/sounds/homer
+        self.sound_doh = pygame.mixer.Sound(
+            "audio/Homer-Doh! - QuickSounds.com.mp3"
+        )
+        self.sound_woohoo = pygame.mixer.Sound(
+            "audio/WOOHOO! (homer) - QuickSounds.com.mp3"
+        )
+
+        # Pandemia by MaxKoMusic | https://maxkomusic.com/
+        # Music promoted by https://www.chosic.com/free-music/all/
+        # Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+        # https://creativecommons.org/licenses/by-sa/3.0/
         pygame.mixer.music.load("audio/Pandemia(chosic.com).mp3")
-            # Pandemia by MaxKoMusic | https://maxkomusic.com/
-            # Music promoted by https://www.chosic.com/free-music/all/
-            # Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
-            # https://creativecommons.org/licenses/by-sa/3.0/
 
     def game_started(self):
         if self.keys["return"]:
@@ -50,15 +57,40 @@ class Game:
         }
 
     def check_collision(self, window, player, obstacle):
-        """Attention, cette fonction reçoit directement les objets qui sont donc mutables."""
-        if player.rect.colliderect(obstacle.rect) and not player.invincible and (not player.jumping or not obstacle.jump_allowed):
+        """Détecte une collision entre le joueur et un obstacle ou les limites.
+
+        Attention :
+            Cette fonction reçoit directement des objets mutables
+            (player, obstacle, window).
+        """
+        collision = player.rect.colliderect(obstacle.rect)
+
+        if (
+            collision
+            and not player.invincible
+            and (not player.jumping or not obstacle.jump_allowed)
+        ):
             return "hit"
-        elif player.rect.colliderect(obstacle.rect) and not player.invincible and obstacle.jump_allowed and player.jumping and not player.stop_points:
+
+        if (
+            collision
+            and not player.invincible
+            and obstacle.jump_allowed
+            and player.jumping
+            and not player.stop_points
+        ):
             return "jumped"
-        elif (player.x <= window.left_limit or player.x >= window.right_limit) and not player.invincible:
+
+        if (
+            not player.invincible
+            and (
+                player.x <= window.left_limit
+                or player.x >= window.right_limit
+            )
+        ):
             return "hit"
-        else:
-            return False
+
+        return False
 
     def check_obstacle_cleared(self, player_y, obs_y, obs_cleared):
         if player_y <= obs_y or obs_cleared:

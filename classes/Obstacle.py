@@ -19,7 +19,7 @@ class Obstacle:
     def set_cleared(self):
         self.cleared = True
 
-    def update_position(self,height , left_limit, right_limit, speed):
+    def update_position(self, height, left_limit, right_limit, speed):
         self.y -= speed
         if self.y < -self.image.get_height():
             self.cleared = False
