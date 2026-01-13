@@ -83,7 +83,7 @@ def main():
 
         elif player.lives == 0:
             window.show_game_over_screen(game.level, player.points)
-            if (restart := game.restart_game()):
+            if game.restart_game():
                 player.reset()
                 player.update(dt)
 
@@ -112,11 +112,11 @@ def main():
                     player.obstacle_hit()
                     game.obstacle_hit(player.lives)
 
-                if (cleared := game.check_obstacle_cleared(
+                if game.check_obstacle_cleared(
                     player.y,
                     obs.y,
                     obs.cleared
-                )):
+                ):
                     obs.set_cleared()
                     if not player.invincible:
                         player.obstacle_cleared()
