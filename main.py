@@ -5,14 +5,18 @@ from classes.Obstacle import Obstacle
 
 
 def main():
-    # Initialiser de la partie
     game = Game()
     window = Window(1400, 750)
-    player = Player(window.width)
+    player = Player(
+        window.width,
+        window.skier_left,
+        window.skier_right
+    )
 
-    #Obstacles
     obstacles = []
     rocks = 3
+    trees = 4
+
     for i in range(rocks):
         obs = Obstacle(
             window.height,
@@ -23,7 +27,6 @@ def main():
         )
         obstacles.append(obs)
 
-    trees = 4
     for i in range(trees):
         obs = Obstacle(
             window.height,
@@ -57,8 +60,12 @@ def main():
 
         else:
             window.display.fill(window.snow_color)
-
-            player.input(game.keys, window)
+            player.input(
+                game.keys,
+                window.height,
+                window.left_limit,
+                window.right_limit
+            )
             player.update(dt)
 
             for obs in obstacles:
@@ -73,18 +80,26 @@ def main():
                     player.obstacle_hit()
                     game.obstacle_hit(player.lives)
 
-                if(cleared := game.check_obstacle_cleared(player, obs)):
+                if(cleared := game.check_obstacle_cleared(
+                    player.y,
+                    obs.y,
+                    obs.cleared
+                )):
                     obs.set_cleared()
                     if not player.invincible:
                         player.obstacle_cleared()
                         game.obstacle_cleared()
 
-                obs.update_position(window.height, window.left_limit, window.right_limit, game.speed)
+                obs.update_position(
+                    window.height,
+                    window.left_limit,
+                    window.right_limit,
+                    game.speed
+                )
                 window.draw(obs.image, obs.x, obs.y)
 
-            # Dessin du joueur (clignotement si invincible)
-            player.draw(window.display)
-            window.update_status(game, player)
+            window.draw_player(player)
+            window.update_status(game.level, player.lives, player.points)
             window.update_side_limit_fillers(game.speed)
 
         game.flip()

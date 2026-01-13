@@ -26,12 +26,12 @@ class Game:
             # https://creativecommons.org/licenses/by-sa/3.0/
 
     def game_started(self):
-        if self.keys[pygame.K_RETURN]:
+        if self.keys["return"]:
             self.started = True
             pygame.mixer.music.play(-1)  # boucle infinie
 
     def restart_game(self):
-        if self.keys[pygame.K_RETURN]:
+        if self.keys["return"]:
             self.level = 1
             pygame.mixer.music.unpause()
             return True
@@ -39,9 +39,18 @@ class Game:
             return False
 
     def update_key_pressed(self):
-        self.keys = pygame.key.get_pressed()
+        pressed = pygame.key.get_pressed()
+        self.keys = {
+            "left": pressed[pygame.K_LEFT],
+            "right": pressed[pygame.K_RIGHT],
+            "up": pressed[pygame.K_UP],
+            "down": pressed[pygame.K_DOWN],
+            "space": pressed[pygame.K_SPACE],
+            "return": pressed[pygame.K_RETURN]
+        }
 
     def check_collision(self, window, player, obstacle):
+        """Attention, cette fonction reçoit directement les objets qui sont donc mutables."""
         if player.rect.colliderect(obstacle.rect) and not player.invincible and (not player.jumping or not obstacle.jump_allowed):
             return "hit"
         elif player.rect.colliderect(obstacle.rect) and not player.invincible and obstacle.jump_allowed and player.jumping and not player.stop_points:
@@ -51,8 +60,8 @@ class Game:
         else:
             return False
 
-    def check_obstacle_cleared(self, player, obs):
-        if player.y <= obs.y or obs.cleared:
+    def check_obstacle_cleared(self, player_y, obs_y, obs_cleared):
+        if player_y <= obs_y or obs_cleared:
             return False
         else:
             return True

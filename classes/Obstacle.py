@@ -1,5 +1,6 @@
 import random
 
+
 class Obstacle:
 
     def __init__(self, height, left_limit, right_limit, image, jump_allowed):

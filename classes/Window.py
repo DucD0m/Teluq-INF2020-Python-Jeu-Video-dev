@@ -21,8 +21,10 @@ class Window:
         self.red = (255, 0, 0)
         self.font_default = pygame.font.SysFont(None, 36)
         self.font = pygame.font.Font("fonts/PressStart2P-Regular.ttf", 18)
-        self.big_tree = pygame.transform.scale(pygame.image.load("images/Winter-Tree-PNG-File.png"), (200, 200))
         self.big_skier = pygame.transform.scale(pygame.image.load("images/Skier-PNG-Photos.png"), (200, 200))
+        self.big_tree = pygame.transform.scale(pygame.image.load("images/Winter-Tree-PNG-File.png"), (200, 200))
+        self.skier_left = pygame.transform.scale(pygame.image.load("images/Skier-PNG-Photos-sm.png"), (100, 100))
+        self.skier_right = pygame.transform.flip(self.skier_left, True, False)
         self.tree = pygame.transform.scale(pygame.image.load("images/Winter-Tree-PNG-File-sm.png"), (70, 70))
         self.rock = pygame.transform.scale(pygame.image.load("images/Stones-Transparent-Isolated-Background-sm.png"), (90, 60))
         self.display = pygame.display.set_mode((self.width, self.height))
@@ -102,21 +104,21 @@ class Window:
             if self.dx <= 0:
                 self.dx += self.spacing
 
-    def update_status(self, game, player):
+    def update_status(self, game_level, player_lives, player_points):
         self.show_text(
-            f"Niveau : {game.level}",
+            f"Niveau : {game_level}",
             self.width // 4,
             20,
             self.black
         )
         self.show_text(
-            f"Vies : {player.lives}",
+            f"Vies : {player_lives}",
             self.width // 2,
             20,
             self.black
         )
         self.show_text(
-            f"Points : {player.points}",
+            f"Points : {player_points}",
             self.width*3 // 4,
             20,
             self.black
@@ -125,3 +127,21 @@ class Window:
     def draw(self, image, x, y):
         if y < self.height or y > -image.get_height():
             self.display.blit(image, (x, y))
+
+    def draw_player(self, player):
+        """Attention, cette fonction reçoit directement un objet qui est donc mutables."""
+        transformed = self.transform_player_image(player.image, player.angle, player.scale)
+        rect = transformed.get_rect(center=(player.x + player.image.get_width()//2, player.y + player.image.get_height()//2))
+        draw_player = True
+
+        if player.invincible:
+            draw_player = int(player.invincible_time * 10) % 2 == 0
+
+        if draw_player:
+            if player.jumping:
+                self.display.blit(transformed, rect)
+            else:
+                self.draw(player.image, player.x, player.y)
+
+    def transform_player_image(self, player_image, player_angle, player_scale):
+        return pygame.transform.rotozoom(player_image, -player_angle, player_scale)
