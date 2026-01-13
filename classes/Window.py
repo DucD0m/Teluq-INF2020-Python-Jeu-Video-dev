@@ -1,9 +1,32 @@
+"""
+Module window.
+
+Ce module définit la classe Window, responsable de la gestion
+de la fenêtre du jeu, de l'affichage graphique, des écrans
+principaux (démarrage, fin de partie) et du rendu des éléments
+visuels (joueur, obstacles, décor et interface utilisateur).
+"""
 import pygame
 
 
 class Window:
+    """Gère la fenêtre principale et l'affichage du jeu.
+
+    Cette classe centralise :
+    - l'initialisation de la fenêtre graphique,
+    - le chargement des images et des polices,
+    - l'affichage des écrans de jeu (début, partie terminée),
+    - le rendu du joueur, des obstacles et du décor,
+    - l'affichage des informations de statut (niveau, vies, points).
+    """
 
     def __init__(self, width, height):
+        """Initialise la fenêtre du jeu et charge les ressources graphiques.
+
+        Args:
+            width (int): Largeur de la fenêtre en pixels.
+            height (int): Hauteur de la fenêtre en pixels.
+        """
         if not pygame.get_init():
             pygame.init()
         self.width = width
@@ -48,11 +71,21 @@ class Window:
         pygame.display.set_caption("Ski Alpin 2D")
 
     def show_text(self, text, x, y, color, font):
+        """Affiche du texte centré à l'écran.
+
+        Args:
+            text (str): Texte à afficher.
+            x (int): Position horizontale du centre du texte.
+            y (int): Position verticale du centre du texte.
+            color (tuple[int, int, int]): Couleur RGB du texte.
+            font (pygame.font.Font): Police utilisée.
+        """
         text_render = font.render(text, True, color)
         text_rect = text_render.get_rect(center=(x, y))
         self.display.blit(text_render, text_rect)
 
     def show_start_screen(self):
+        """Affiche l'écran de démarrage du jeu."""
         self.display.fill(self.blue)
 
         self.show_text(
@@ -64,7 +97,7 @@ class Window:
         )
 
         self.show_text(
-            "Appuyer sur RETOUR pour débuter",
+            "Appuyer sur ENTRÉE pour débuter",
             self.width // 2,
             self.height*2 // 3,
             self.white,
@@ -76,6 +109,12 @@ class Window:
             self.big_skier, [self.width - 300, self.height // 2])
 
     def show_game_over_screen(self, game_level, player_points):
+        """Affiche l'écran de fin de partie.
+
+        Args:
+            game_level (int): Niveau atteint par le joueur.
+            player_points (int): Score final du joueur.
+        """
         self.display.fill(self.red)
 
         self.show_text(
@@ -103,7 +142,7 @@ class Window:
         )
 
         self.show_text(
-            "Appuyer sur RETOUR pour recommencer",
+            "Appuyer sur ENTRÉE pour recommencer",
             self.width // 2,
             self.height*2.5 // 3,
             self.white,
@@ -114,6 +153,11 @@ class Window:
         self.display.blit(self.big_skier, [self.width - 400, 200])
 
     def update_side_limit_fillers(self, speed):
+        """Met à jour le décor sur les bords de la piste.
+
+        Args:
+            speed (int): Vitesse de défilement vertical.
+        """
         for i in range(-1, self.num_rows):
             x = i * self.spacing + self.dx
             self.display.blit(self.tree, [self.alignment, x])
@@ -136,6 +180,13 @@ class Window:
             self.dx += self.spacing
 
     def update_status(self, game_level, player_lives, player_points):
+        """Affiche les informations de jeu en haut de l'écran.
+
+        Args:
+            game_level (int): Niveau actuel.
+            player_lives (int): Nombre de vies restantes.
+            player_points (int): Nombre de points actuel.
+        """
         self.show_text(
             f"Niveau : {game_level}",
             self.width // 4,
@@ -159,11 +210,35 @@ class Window:
         )
 
     def draw(self, image, x, y):
+        """Dessine une image si elle est visible à l'écran.
+
+        Args:
+            image (pygame.Surface): Image à afficher.
+            x (int): Position horizontale.
+            y (int): Position verticale.
+        """
         if y < self.height or y > -image.get_height():
             self.display.blit(image, (x, y))
 
     def draw_player(self, player):
-        """Attention les objets sont mutables."""
+        """Affiche le joueur à l'écran.
+
+        Cette méthode gère plusieurs états visuels du joueur :
+        - **Invincibilité** : lorsque le joueur est invincible, son
+          affichage alterne (effet de clignotement) afin d'indiquer
+          visuellement qu'il ne peut pas subir de collision.
+        - **Saut** : lorsque le joueur saute, son image est transformée
+          (rotation et mise à l'échelle) pour simuler le mouvement aérien.
+
+        Attention :
+            Cette méthode utilise directement l'instance de l'objet joueur,
+            qui est mutable.
+
+        Args:
+            player (Player): Instance du joueur contenant son état
+                visuel (position, image, angle, échelle, saut et
+                invincibilité).
+        """
         transformed = self.transform_player_image(
             player.image, player.angle, player.scale)
         rect = transformed.get_rect(center=(
@@ -184,6 +259,16 @@ class Window:
     def transform_player_image(
         self, player_image, player_angle, player_scale
     ):
+        """Applique une rotation et un redimensionnement au joueur.
+
+        Args:
+            player_image (pygame.Surface): Image du joueur.
+            player_angle (float): Angle de rotation.
+            player_scale (float): Facteur d'échelle.
+
+        Returns:
+            pygame.Surface: Image transformée.
+        """
         return pygame.transform.rotozoom(
             player_image, -player_angle, player_scale
         )
