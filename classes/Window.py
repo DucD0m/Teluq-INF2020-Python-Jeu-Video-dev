@@ -217,7 +217,10 @@ class Window:
             x (int): Position horizontale.
             y (int): Position verticale.
         """
-        if y < self.height or y > -image.get_height():
+        image_height = image.get_height()
+        visible = -image_height < y < self.height
+
+        if visible:
             self.display.blit(image, (x, y))
 
     def draw_player(self, player):

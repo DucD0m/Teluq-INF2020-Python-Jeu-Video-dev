@@ -1,0 +1,53 @@
+name: Python Tests (unittest), Lint (flake8) and Coverage
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.4'
+
+      - name: Cache uv dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: uv-${{ hashFiles('uv.lock') }}
+          restore-keys: |
+            uv-
+
+      - name: Install uv and dependencies
+        run: |
+          pip install uv
+          uv sync
+
+      - name: Run style check, unittests and generate coverage
+        run: |
+          uv run flake8 main.py classes
+          uv run coverage run --rcfile=.coveragerc -m unittest discover -s tests
+          uv run coverage report
+          uv run coverage-badge -o coverage.svg -f
+
+      - name: Commit and push coverage badge
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add coverage.svg
+          git commit -m "Update coverage badge" || echo "No changes to commit"
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

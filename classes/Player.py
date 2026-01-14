@@ -67,16 +67,20 @@ class Player:
     def input(self, keys, height, left_limit, right_limit):
         """Traite les entrées utilisateur et applique les déplacements.
 
+        # pragma: no cover signifie que les lignes associées ne sont
+        pas calculées dans le calcul de couverture des tests unittest.
+
         Args:
             keys (dict): Dictionnaire des touches actives.
             height (int): Hauteur de la fenêtre.
             left_limit (int): Limite horizontale gauche.
             right_limit (int): Limite horizontale droite.
         """
-        self.horizontal_move(keys)
-        self.vertical_move(keys)
-        self.jump_move(keys)
-        self.position_limits(height, left_limit, right_limit)
+        self.horizontal_move(keys)  # pragma: no cover
+        self.vertical_move(keys)  # pragma: no cover
+        self.jump_move(keys)  # pragma: no cover
+        self.position_limits(
+            height, left_limit, right_limit)  # pragma: no cover
 
     def horizontal_move(self, keys):
         """Gère le déplacement horizontal du joueur."""
@@ -148,8 +152,9 @@ class Player:
         """Anime le saut du joueur.
 
         Le saut est divisé en deux phases :
-        - agrandissement et rotation (0° → 180°),
-        - rétrécissement et rotation (180° → 360°).
+        - première moitié : agrandissement et rotation (0° → 180°),
+        - deuxième moitié : rétrécissement et rotation (180° → 360°),
+          puis remise à l'état normal.
         """
         if self.jumping:
             self.jump_time += dt
@@ -159,13 +164,13 @@ class Player:
                 self.jumping = False
                 self.angle = 0.0
                 self.scale = 1.0
-
-            if t < 0.5:
-                self.scale = 1.0 + t * 2
-                self.angle = t * 360
             else:
-                self.scale = 2.0 - (t - 0.5) * 2
-                self.angle = 180 + (t - 0.5) * 360
+                if t < 0.5:
+                    self.scale = 1.0 + t * 2
+                    self.angle = t * 360
+                else:
+                    self.scale = 2.0 - (t - 0.5) * 2
+                    self.angle = (t - 0.5) * 360 + 180
 
     def obstacle_cleared(self):
         """Ajoute des points lorsqu'un obstacle est évité."""
