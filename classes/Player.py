@@ -164,6 +164,7 @@ class Player:
                 self.jumping = False
                 self.angle = 0.0
                 self.scale = 1.0
+                self.stop_points = False
             else:
                 if t < 0.5:
                     self.scale = 1.0 + t * 2
