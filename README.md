@@ -1,3 +1,6 @@
+![Tests](https://github.com/DucD0m/Teluq-INF2020-Python-Jeu-Video-dev/actions/workflows/tests.yml/badge.svg?branch=main&sanitize=true)
+![Coverage](coverage.svg)
+
 2e Travail du cours INF2020 de l'Université Téluq. Il s'agit d'un jeu de Ski Alpin en animation 2D programmé en Python avec le module Pygame. Le jeu est de style arcade et est inspiré des différents jeu de ski alpin produits sur la plateforme VIC-20 dans les années 80. Le package uv est utilisé pour la gestion des dépendances. La version de python requise est 3.12.4 (uv python pin 3.12.4).
 
 Commandes de jeu:
@@ -15,5 +18,7 @@ Règles du jeu:
 - Le niveau augmente à chaque 1000 points.
 - La vitesse du jeu augmente à chaque niveau.
 
-Note:
-- Les fichiers Python respectent les normes PEP8 et PEP257 pour le style et les docstrings. La vérification du style est accomplie avec l'outil Flake8 ainsi que celui trouvé à https://www.codewof.co.nz/style/python3/
+Notes:
+- Les tests unittest ont été entièrement générés par ChatGPT et visent uniquement à explorer le concept. Ils ne prétendent pas être complets ni vérifiés autrement que de ne pas générer d'erreurs.
+
+- Sauf les fichiers unittest, les fichiers Python respectent les normes PEP8 et PEP257 pour le style et les docstrings. La vérification du style est accomplie avec l'outil Flake8 ainsi que celui trouvé à https://www.codewof.co.nz/style/python3/
