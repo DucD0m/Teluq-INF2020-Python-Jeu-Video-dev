@@ -20,11 +20,15 @@ class Game:
     """Gère la logique principale et l'état global du jeu."""
 
     def __init__(self):
-        """Initialise le jeu, pygame et les ressources audio."""
+        """Initialise le jeu, pygame et les ressources audio.
+
+        # pragma: no cover signifie que les lignes associées ne sont
+        pas calculées dans le calcul de couverture des tests unittest.
+        """
         pygame.mixer.pre_init(44100, -16, 2, 512)
 
         if not pygame.get_init():
-            pygame.init()
+            pygame.init()  # pragma: no cover
 
         pygame.mixer.init()
 

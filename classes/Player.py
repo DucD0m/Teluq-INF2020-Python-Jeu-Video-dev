@@ -172,9 +172,25 @@ class Player:
                     self.scale = 2.0 - (t - 0.5) * 2
                     self.angle = (t - 0.5) * 360 + 180
 
+    def add_points(self, p, dp):
+        """Ajoute des points au total actuel.
+
+        Cette fonction est une démonstration de fonction pure
+        en programmation fonctionnelle pour répondre aux exigences
+        du 2e travail noté du cours INF2020 de l'Université Téluq.
+
+        Args:
+            p (int): Nombre de points actuels.
+            dp (int): Nombre de points à ajouter.
+
+        Returns:
+            int: La somme des points actuels et des points à être ajoutés.
+        """
+        return p + dp
+
     def obstacle_cleared(self):
         """Ajoute des points lorsqu'un obstacle est évité."""
-        self.points += 25
+        self.points = self.add_points(self.points, 25)
 
     def obstacle_jumped(self):
         """Ajoute des points lorsqu'un obstacle est sauté."""
