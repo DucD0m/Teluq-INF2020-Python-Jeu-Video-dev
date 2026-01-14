@@ -7,6 +7,9 @@ Commandes de jeu:
 Règles du jeu:
 - Il est permis de sauter par dessus les roches.
 - Il n'est pas permis de sauter par dessus les arbres.
+- Une vie est perdue à chaque collision avec un obstacle ou les forêts en bordure.
+- Un période d'invincibilité est appliquée après chaque collision.
+- Aucun point n'est attribué durant la période d'invincililité.
 - Un passage d'obstacle (arbre ou roche) vaut 25 points.
 - Un saut par dessus une roche vaut 100 points.
 - Le niveau augmente à chaque 1000 points.
