@@ -275,3 +275,7 @@ class Window:
         return pygame.transform.rotozoom(
             player_image, -player_angle, player_scale
         )
+
+    def flip(self):
+        """Met à jour l'affichage de la fenêtre."""
+        pygame.display.flip()

@@ -180,6 +180,15 @@ class TestWindow(unittest.TestCase):
         self.window.draw_player(player)
         self.display.blit.assert_called()
 
+    # ------------------------------------------------------------------
+    # DISPLAY
+    # ------------------------------------------------------------------
+
+    @patch("pygame.display.flip")
+    def test_flip(self, mock_flip):
+        self.window.flip()
+        mock_flip.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()

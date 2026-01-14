@@ -137,7 +137,7 @@ def main():
             window.update_side_limit_fillers(game.speed)
 
         # Mise à jour de l'affichage et contrôle du framerate
-        game.flip()
+        window.flip()
         game.clock.tick(60)
 
     game.quit()

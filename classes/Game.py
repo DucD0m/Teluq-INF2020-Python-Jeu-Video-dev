@@ -195,10 +195,6 @@ class Game:
 
         return quit_event
 
-    def flip(self):
-        """Met à jour l'affichage de la fenêtre."""
-        pygame.display.flip()
-
     def quit(self):
         """Ferme proprement pygame."""
         pygame.quit()

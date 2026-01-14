@@ -172,13 +172,6 @@ class TestGame(unittest.TestCase):
         mock_get.return_value = []
         self.assertFalse(self.game.check_quit_event())
 
-    # ---------- DISPLAY ----------
-
-    @patch("pygame.display.flip")
-    def test_flip(self, mock_flip):
-        self.game.flip()
-        mock_flip.assert_called_once()
-
     @patch("pygame.quit")
     def test_quit(self, mock_quit):
         self.game.quit()
