@@ -1,9 +1,21 @@
+"""
+Gestionnaire de ressources visuelles pour un jeu Pygame.
+
+Ce module fournit la classe VisualAssetManager.
+"""
 import pygame
 
 
 class VisualAssetManager:
+    """Gestionnaire de ressources visuelles pour un jeu Pygame.
+
+    Cette classe permet de charger des polices et des images, en fournissant
+    des versions de secours si les fichiers sont introuvables ou si pygame
+    n'a pas de mode vidéo actif.
+    """
 
     def __init__(self):
+        """Initialise les chemins des fichiers et la police par défaut."""
         self.font_default = pygame.font.SysFont(None, 36)
         self.font_retro_path = (
             "fonts/PressStart2P-Regular/PressStart2P-Regular.ttf"
@@ -19,6 +31,12 @@ class VisualAssetManager:
 
     # Polices
     def load_retro_font(self):
+        """Charge la police rétro.
+
+        Returns:
+            pygame.font.Font: La police rétro chargée ou la police par défaut
+                si le fichier est manquant.
+        """
         try:
             font_retro = pygame.font.Font(self.font_retro_path, 18)
         except FileNotFoundError:
@@ -28,6 +46,12 @@ class VisualAssetManager:
         return font_retro
 
     def load_snow_font(self):
+        """Charge la police 'ice and snow'.
+
+        Returns:
+            pygame.font.Font: La police chargée ou la police par défaut
+                si le fichier est manquant.
+        """
         try:
             font_snow = pygame.font.Font(self.font_snow_path, 216)
         except FileNotFoundError:
@@ -38,6 +62,12 @@ class VisualAssetManager:
 
     # Images
     def load_big_skier(self):
+        """Charge l'image grand skieur et la redimensionne.
+
+        Returns:
+            pygame.Surface: Surface de l'image ou une surface vide
+                si fichier manquant.
+        """
         try:
             big_skier = pygame.transform.scale(pygame.image.load(
                 self.big_skier_path), (200, 200))
@@ -48,6 +78,12 @@ class VisualAssetManager:
         return big_skier
 
     def load_big_tree(self):
+        """Charge l'image grand arbre et la redimensionne.
+
+        Returns:
+            pygame.Surface: Surface de l'image ou une surface vide
+                si fichier manquant.
+        """
         try:
             big_tree = pygame.transform.scale(pygame.image.load(
                 self.big_tree_path), (200, 200))
@@ -58,6 +94,12 @@ class VisualAssetManager:
         return big_tree
 
     def load_skier(self):
+        """Charge l'image du skieur et la redimensionne.
+
+        Returns:
+            pygame.Surface: Surface de l'image ou un skieur dessiné si fichier
+                manquant ou erreur pygame.
+        """
         try:
             skier_left = pygame.transform.scale(pygame.image.load(
                 self.skier_path).convert_alpha(), (100, 100))
@@ -71,6 +113,11 @@ class VisualAssetManager:
         return skier_left
 
     def load_tree(self):
+        """Charge l'image de l'arbre ou crée un arbre si fichier manquant.
+
+        Returns:
+            pygame.Surface: Surface de l'arbre.
+        """
         green = (0, 100, 50)
         triangle_points = [
             (35, 0),
@@ -92,6 +139,11 @@ class VisualAssetManager:
         return tree
 
     def load_rock(self):
+        """Charge l'image du rocher ou crée un rocher si fichier manquant.
+
+        Returns:
+            pygame.Surface: Surface du rocher.
+        """
         grey = (150, 150, 150)
 
         try:
@@ -109,14 +161,15 @@ class VisualAssetManager:
         return rock
 
     def print_file_missing_error(self, file_path):
-        """Affiche un message d'erreur dans le terminal.
+        """Affiche un message d'erreur si un fichier est introuvable.
 
         Args:
-            file_path (str): Emplacement du fichier.
+            file_path (str): Chemin du fichier manquant.
         """
         print(f'[ERREUR]: Le fichier "{file_path}" est introuvable.')
 
     def print_video_mode_error(self):
+        """Affiche un message d'erreur s'il n'y pas de mode vidéo actif."""
         print(
             "No video mode has been set: convert_alpha() "
             "doit être appelé après pygame.display.set_mode()"
@@ -126,7 +179,7 @@ class VisualAssetManager:
         """Crée un skieur stylisé dessiné avec des primitives Pygame.
 
         Returns:
-            Surface: une surface avec transparence représentant un skieur.
+            pygame.Surface: Surface représentant un skieur avec transparence.
         """
         size = (100, 100)
         surface = pygame.Surface(size, pygame.SRCALPHA)

@@ -9,7 +9,7 @@ exécute la boucle principale du jeu qui gère :
     - L'affichage du joueur, des obstacles et de l'interface
     - Le contrôle du nombre d'images par seconde (60 FPS)
 
-Classes importées :
+Classes:
     Game : Gestion de l'état du jeu, des entrées, des collisions,
         des sons, de la musique et du temps.
     Window : Gestion du rendu à l'écran.

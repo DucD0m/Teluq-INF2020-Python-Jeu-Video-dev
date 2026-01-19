@@ -5,6 +5,9 @@ Ce module définit la classe Window, responsable de la gestion
 de la fenêtre du jeu, de l'affichage graphique, des écrans
 principaux (démarrage, fin de partie) et du rendu des éléments
 visuels (joueur, obstacles, décor et interface utilisateur).
+
+Classes:
+    VisualAssetManager: Charge et fournit des polices et images.
 """
 import pygame
 from classes.VisualAssetManager import VisualAssetManager
