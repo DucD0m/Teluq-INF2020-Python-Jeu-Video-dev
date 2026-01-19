@@ -7,6 +7,7 @@ principaux (démarrage, fin de partie) et du rendu des éléments
 visuels (joueur, obstacles, décor et interface utilisateur).
 """
 import pygame
+from classes.VisualAssetManager import VisualAssetManager
 
 
 class Window:
@@ -29,6 +30,7 @@ class Window:
         """
         if not pygame.get_init():
             pygame.init()
+        assets = VisualAssetManager()
         self.width = width
         self.height = height
         self.spacing = 50
@@ -38,37 +40,19 @@ class Window:
         self.left_limit = 3 * self.spacing
         self.right_limit = self.width - 5 * self.spacing
         self.white = (255, 255, 255)
-        self.black = (0, 0, 0)
-        self.blue = (50, 50, 255)
         self.snow_color = (200, 200, 255)
-        self.red = (255, 0, 0)
-        self.font_default = pygame.font.SysFont(None, 36)
-
-        self.font_retro = pygame.font.Font(
-            "fonts/PressStart2P-Regular/PressStart2P-Regular.ttf", 18)
-
-        self.font_snow = pygame.font.Font(
-            "fonts/ice-and-snow-font/IceAndsnowNormal-2ve8.ttf", 216)
-
-        self.big_skier = pygame.transform.scale(pygame.image.load(
-            "images/Skier-PNG-Photos.png"), (200, 200))
-
-        self.big_tree = pygame.transform.scale(pygame.image.load(
-            "images/Winter-Tree-PNG-File.png"), (200, 200))
-
-        self.skier_left = pygame.transform.scale(pygame.image.load(
-            "images/Skier-PNG-Photos-sm.png"), (100, 100))
-
-        self.skier_right = pygame.transform.flip(self.skier_left, True, False)
-
-        self.tree = pygame.transform.scale(pygame.image.load(
-            "images/Winter-Tree-PNG-File-sm.png"), (70, 70))
-
-        self.rock = pygame.transform.scale(pygame.image.load(
-            "images/Stones-Transparent-Isolated-Background-sm.png"), (90, 60))
 
         self.display = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Ski Alpin 2D")
+
+        self.font_retro = assets.load_retro_font()
+        self.font_snow = assets.load_snow_font()
+        self.big_skier = assets.load_big_skier()
+        self.big_tree = assets.load_big_tree()
+        self.skier_left = assets.load_skier()
+        self.skier_right = pygame.transform.flip(self.skier_left, True, False)
+        self.tree = assets.load_tree()
+        self.rock = assets.load_rock()
 
     def show_text(self, text, x, y, color, font):
         """Affiche du texte centré à l'écran.
@@ -86,7 +70,8 @@ class Window:
 
     def show_start_screen(self):
         """Affiche l'écran de démarrage du jeu."""
-        self.display.fill(self.blue)
+        blue = (50, 50, 255)
+        self.display.fill(blue)
 
         self.show_text(
             "SKI ALPIN 2D",
@@ -115,7 +100,8 @@ class Window:
             game_level (int): Niveau atteint par le joueur.
             player_points (int): Score final du joueur.
         """
-        self.display.fill(self.red)
+        red = (255, 0, 0)
+        self.display.fill(red)
 
         self.show_text(
             "LA PARTIE EST TERMINÉE",
@@ -187,25 +173,26 @@ class Window:
             player_lives (int): Nombre de vies restantes.
             player_points (int): Nombre de points actuel.
         """
+        black = (0, 0, 0)
         self.show_text(
             f"Niveau : {game_level}",
             self.width // 4,
             20,
-            self.black,
+            black,
             self.font_retro
         )
         self.show_text(
             f"Vies : {player_lives}",
             self.width // 2,
             20,
-            self.black,
+            black,
             self.font_retro
         )
         self.show_text(
             f"Points : {player_points}",
             self.width*3 // 4,
             20,
-            self.black,
+            black,
             self.font_retro
         )
 
