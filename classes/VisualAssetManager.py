@@ -1,12 +1,14 @@
 """
 Gestionnaire de ressources visuelles pour un jeu Pygame.
 
-Ce module fournit la classe VisualAssetManager.
+Ce module fournit la classe VisualAssetManager qui est
+une sous-classe de la classe AssetManager.
 """
 import pygame
+from classes.AssetManager import AssetManager
 
 
-class VisualAssetManager:
+class VisualAssetManager(AssetManager):
     """Gestionnaire de ressources visuelles pour un jeu Pygame.
 
     Cette classe permet de charger des polices et des images, en fournissant
@@ -41,7 +43,7 @@ class VisualAssetManager:
             font_retro = pygame.font.Font(self.font_retro_path, 18)
         except FileNotFoundError:
             font_retro = self.font_default
-            self.print_file_missing_error(self.font_retro_path)
+            super().print_file_missing_error(self.font_retro_path)
 
         return font_retro
 
@@ -56,7 +58,7 @@ class VisualAssetManager:
             font_snow = pygame.font.Font(self.font_snow_path, 216)
         except FileNotFoundError:
             font_snow = self.font_default
-            self.print_file_missing_error(self.font_snow_path)
+            super().print_file_missing_error(self.font_snow_path)
 
         return font_snow
 
@@ -73,7 +75,7 @@ class VisualAssetManager:
                 self.big_skier_path), (200, 200))
         except FileNotFoundError:
             big_skier = pygame.Surface((0, 0))
-            self.print_file_missing_error(self.big_skier_path)
+            super().print_file_missing_error(self.big_skier_path)
 
         return big_skier
 
@@ -89,7 +91,7 @@ class VisualAssetManager:
                 self.big_tree_path), (200, 200))
         except FileNotFoundError:
             big_tree = pygame.Surface((0, 0))
-            self.print_file_missing_error(self.big_tree_path)
+            super().print_file_missing_error(self.big_tree_path)
 
         return big_tree
 
@@ -105,7 +107,7 @@ class VisualAssetManager:
                 self.skier_path).convert_alpha(), (100, 100))
         except FileNotFoundError:
             skier_left = self.create_fallback_skier()
-            self.print_file_missing_error(self.skier_path)
+            super().print_file_missing_error(self.skier_path)
         except pygame.error:
             skier_left = self.create_fallback_skier()
             self.print_video_mode_error()
@@ -130,7 +132,7 @@ class VisualAssetManager:
         except FileNotFoundError:
             tree = pygame.Surface((70, 70), pygame.SRCALPHA)
             pygame.draw.polygon(tree, green, triangle_points)
-            self.print_file_missing_error(self.tree_path)
+            super().print_file_missing_error(self.tree_path)
         except pygame.error:
             tree = pygame.Surface((70, 70), pygame.SRCALPHA)
             pygame.draw.polygon(tree, green, triangle_points)
@@ -152,21 +154,13 @@ class VisualAssetManager:
         except FileNotFoundError:
             rock = pygame.Surface((90, 60), pygame.SRCALPHA)
             pygame.draw.ellipse(rock, grey, rock.get_rect())
-            self.print_file_missing_error(self.rock_path)
+            super().print_file_missing_error(self.rock_path)
         except pygame.error:
             rock = pygame.Surface((90, 60), pygame.SRCALPHA)
             pygame.draw.ellipse(rock, grey, rock.get_rect())
             self.print_video_mode_error()
 
         return rock
-
-    def print_file_missing_error(self, file_path):
-        """Affiche un message d'erreur si un fichier est introuvable.
-
-        Args:
-            file_path (str): Chemin du fichier manquant.
-        """
-        print(f'[ERREUR]: Le fichier "{file_path}" est introuvable.')
 
     def print_video_mode_error(self):
         """Affiche un message d'erreur s'il n'y pas de mode vidéo actif."""

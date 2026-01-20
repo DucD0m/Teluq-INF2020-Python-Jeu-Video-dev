@@ -2,16 +2,19 @@ import unittest
 import pygame
 from collections import defaultdict
 from unittest.mock import Mock, patch
+
 from classes.Game import Game
 
 
 class TestGame(unittest.TestCase):
 
+    # ---------- SETUP ----------
+
     @patch("pygame.mixer")
     @patch("pygame.time.Clock")
     @patch("pygame.get_init", return_value=True)
     def setUp(self, mock_get_init, mock_clock, mock_mixer):
-        # Mock audio
+        # Mock audio system
         mock_mixer.Sound.return_value = Mock()
         mock_mixer.music = Mock()
 
@@ -46,6 +49,7 @@ class TestGame(unittest.TestCase):
         result = self.game.restart_game()
         self.assertTrue(result)
         self.assertEqual(self.game.level, 1)
+        self.assertEqual(self.game.speed, 2)
         mock_unpause.assert_called_once()
 
     def test_restart_game_false(self):
@@ -57,11 +61,8 @@ class TestGame(unittest.TestCase):
     @patch("pygame.key.get_pressed")
     def test_update_key_pressed(self, mock_pressed):
         pressed = defaultdict(bool)
-
         pressed[pygame.K_LEFT] = True
         pressed[pygame.K_RIGHT] = True
-        pressed[pygame.K_UP] = False
-        pressed[pygame.K_DOWN] = False
         pressed[pygame.K_SPACE] = True
         pressed[pygame.K_RETURN] = True
 
@@ -80,6 +81,7 @@ class TestGame(unittest.TestCase):
         window = Mock(left_limit=10, right_limit=100)
 
         player = Mock()
+        player.rect = Mock()
         player.rect.colliderect.return_value = True
         player.invincible = False
         player.jumping = False
@@ -164,7 +166,7 @@ class TestGame(unittest.TestCase):
 
     @patch("pygame.event.get")
     def test_check_quit_event_true(self, mock_get):
-        mock_get.return_value = [Mock(type=256)]
+        mock_get.return_value = [Mock(type=pygame.QUIT)]
         self.assertTrue(self.game.check_quit_event())
 
     @patch("pygame.event.get")
@@ -176,6 +178,31 @@ class TestGame(unittest.TestCase):
     def test_quit(self, mock_quit):
         self.game.quit()
         mock_quit.assert_called_once()
+
+
+# ---------- AUDIO EXCEPTIONS ----------
+
+class TestGameAudioExceptions(unittest.TestCase):
+
+    @patch("pygame.get_init", return_value=True)
+    @patch("pygame.time.Clock")
+    @patch("pygame.mixer")
+    @patch("classes.AssetManager.AssetManager.print_file_missing_error")
+    def test_all_audio_files_missing(
+        self, mock_print, mock_mixer, mock_clock, mock_get_init
+    ):
+        mock_mixer.Sound.side_effect = FileNotFoundError
+        mock_mixer.music.load.side_effect = pygame.error
+
+        game = Game()
+
+        self.assertIsNone(game.sound_killed)
+        self.assertIsNone(game.sound_points)
+        self.assertIsNone(game.sound_doh)
+        self.assertIsNone(game.sound_woohoo)
+        self.assertFalse(game.music)
+
+        self.assertGreaterEqual(mock_print.call_count, 5)
 
 
 if __name__ == "__main__":
