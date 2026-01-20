@@ -120,7 +120,7 @@ class Game(AssetManager):
         }
 
     def check_collision(self, window, player, obstacle):
-        """Détecte une collision entre le joueur et un obstacle.
+        """Détecte une collision entre le joueur et un obstacle visible.
 
         Cette méthode gère plusieurs cas :
         - collision classique (perte de vie),
@@ -139,7 +139,12 @@ class Game(AssetManager):
         Returns:
             str | bool: "hit", "jumped" ou False s'il n'y a pas de collision.
         """
-        collision = player.rect.colliderect(obstacle.rect)
+        visible = -obstacle.image.get_height() < obstacle.y < window.height
+
+        if visible:
+            collision = player.rect.colliderect(obstacle.rect)
+        else:
+            collision = False
 
         if (
             collision
