@@ -32,14 +32,14 @@ def main():
     La boucle se termine lorsque l'utilisateur quitte ou que le joueur n'a plus
     de vies.
     """
-    WIDTH = 1400
-    HEIGHT = 750
+    width = 1400
+    height = 750
     obstacles = []
     rocks = 3
     trees = 4
 
     game = Game()
-    window = Window(WIDTH, HEIGHT)
+    window = Window(width, height)
     player = Player(
         window.width,
         window.skier_left,
