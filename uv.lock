@@ -112,6 +112,7 @@ dependencies = [
     { name = "coverage-badge" },
     { name = "flake8" },
     { name = "pygame" },
+    { name = "setuptools" },
 ]
 
 [package.metadata]
@@ -120,6 +121,7 @@ requires-dist = [
     { name = "coverage-badge", specifier = ">=1.1.2" },
     { name = "flake8", specifier = ">=7.3.0" },
     { name = "pygame", specifier = ">=2.6.1" },
+    { name = "setuptools", specifier = "<81" },
 ]
 
 [[package]]
