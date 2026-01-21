@@ -45,7 +45,7 @@ def side_obstacles_positions(spacing, alignment, width, rows, dx):
     x_positions = left_x + right_x
 
     # Positions verticales (Y) pour chaque ligne
-    y_positions = [row * spacing + dx for row in range(-1, rows)]
+    y_positions = [row * spacing + dx for row in range(-2, rows)]
 
     # Combinaison X, Y en tuples (x, y)
     positions = sum(
