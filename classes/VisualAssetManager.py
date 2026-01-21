@@ -29,10 +29,16 @@ class VisualAssetManager(AssetManager):
         self.font_snow_path = (
             "fonts/ice-and-snow-font/IceAndsnowNormal-2ve8.ttf"
         )
+
+        # https://www.pngmart.com/image/706730
         self.big_skier_path = "images/Skier-PNG-Photos.png"
-        self.big_tree_path = "images/Winter-Tree-PNG-File.png"
         self.skier_path = "images/Skier-PNG-Photos-sm.png"
+
+        # https://www.pngmart.com/image/272420
+        self.big_tree_path = "images/Winter-Tree-PNG-File.png"
         self.tree_path = "images/Winter-Tree-PNG-File-sm.png"
+
+        # https://www.pngmart.com/image/490201
         self.rock_path = "images/Stones-Transparent-Isolated-Background-sm.png"
 
     # Polices

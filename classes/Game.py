@@ -44,6 +44,7 @@ class Game(AssetManager):
         self.speed = 2
         self.keys = ""
 
+        # github.com/RobertGodin/CodePython/tree/master/chapitre8/Son1.wav
         sound_killed_path = "audio/killed.wav"
 
         # Sound from https://www.bfxr.net/
