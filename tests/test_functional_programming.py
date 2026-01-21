@@ -32,7 +32,7 @@ class TestFunctionalExamples(unittest.TestCase):
         self.assertTrue(all(len(pos) == 2 for pos in positions))
 
         # Vérifie la longueur : 4 obstacles gauche + 4 obstacles droite par ligne
-        expected_length = 8 * (rows + 1)  # +1 car range(-1, rows)
+        expected_length = 8 * (rows + 2)  # +2 car range(-2, rows)
         self.assertEqual(len(positions), expected_length)
 
     def test_side_obstacles_positions_dx_offset(self):
@@ -46,7 +46,7 @@ class TestFunctionalExamples(unittest.TestCase):
 
         # Vérifie que le premier y correspond à row=-1
         y_values = sorted(set(pos[1] for pos in positions))
-        self.assertEqual(y_values[0], -spacing + dx)
+        self.assertEqual(y_values[0], -2*spacing + dx)
         self.assertEqual(y_values[-1], (rows - 1) * spacing + dx)
 
 if __name__ == "__main__":
