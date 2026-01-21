@@ -26,7 +26,7 @@ def side_obstacles_positions(spacing, alignment, width, rows, dx):
 
     Génère une liste de coordonnées pour les obstacles situés à gauche
     et à droite de la piste, répartis sur plusieurs rangées.
-    Fonction déclarative et purement fonctionnelle.
+    Fonction déclarative et fonctionnelle.
 
     Args:
         spacing (int): Espacement horizontal et vertical entre obstacles.
@@ -47,10 +47,7 @@ def side_obstacles_positions(spacing, alignment, width, rows, dx):
     # Positions verticales (Y) pour chaque ligne
     y_positions = [row * spacing + dx for row in range(-2, rows)]
 
-    # Combinaison X, Y en tuples (x, y)
-    positions = sum(
-        map(lambda y: list(map(lambda x: (x, y), x_positions)), y_positions),
-        []
-    )
+    # Combinaison X, Y en tuples (x, y) - Liste en compréhension.
+    positions = [(x, y) for y in y_positions for x in x_positions]
 
     return positions
