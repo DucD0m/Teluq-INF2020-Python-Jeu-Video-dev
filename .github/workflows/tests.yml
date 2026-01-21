@@ -37,7 +37,7 @@ jobs:
 
       - name: Run style check, unittests and generate coverage
         run: |
-          uv run flake8 main.py classes
+          uv run flake8 main.py classes utils
           uv run coverage run --rcfile=.coveragerc -m unittest discover -s tests
           uv run coverage report
           uv run coverage-badge -o coverage.svg -f

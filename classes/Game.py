@@ -13,6 +13,10 @@ Elle gère :
 La classe Game agit comme un contrôleur central reliant le joueur,
 la fenêtre et les obstacles, elle est une sous-classe de la classe
 AssetManager.
+
+Classes:
+    AssetManager: Fournit des utilitaires simples pour signaler les problèmes
+        de chargement de fichiers (images, sons, polices, etc.)
 """
 import pygame
 from classes.AssetManager import AssetManager

@@ -1,5 +1,5 @@
 [run]
-source = classes
+source = classes, utils
 
 [report]
 # Exclude single-line and block pragmas

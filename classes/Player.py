@@ -10,7 +10,11 @@ du jeu de ski. Elle gère :
 
 La classe ne dépend pas directement de pygame pour la gestion des entrées,
 ce qui facilite la séparation de la logique de jeu.
+
+Functions:
+    add_points: Ajoute des points à un total existant.
 """
+from utils.FunctionalProgramming import add_points
 
 
 class Player:
@@ -173,29 +177,13 @@ class Player:
                     self.scale = 2.0 - (t - 0.5) * 2
                     self.angle = (t - 0.5) * 360 + 180
 
-    def add_points(self, p, dp):
-        """Ajoute des points au total actuel.
-
-        Cette fonction est une démonstration de fonction pure
-        en programmation fonctionnelle pour répondre aux exigences
-        du 2e travail noté du cours INF2020 de l'Université Téluq.
-
-        Args:
-            p (int): Nombre de points actuels.
-            dp (int): Nombre de points à ajouter.
-
-        Returns:
-            int: La somme des points actuels et des points à être ajoutés.
-        """
-        return p + dp
-
     def obstacle_cleared(self):
         """Ajoute des points lorsqu'un obstacle est évité."""
-        self.points = self.add_points(self.points, 25)
+        self.points = add_points(self.points, 25)
 
     def obstacle_jumped(self):
         """Ajoute des points lorsqu'un obstacle est sauté."""
-        self.points += 100
+        self.points = add_points(self.points, 100)
         self.stop_points = True
         self.stop_points_time = 0.0
 

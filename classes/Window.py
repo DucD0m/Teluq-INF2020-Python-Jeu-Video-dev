@@ -8,9 +8,14 @@ visuels (joueur, obstacles, décor et interface utilisateur).
 
 Classes:
     VisualAssetManager: Charge et fournit des polices et images.
+
+Functions:
+    side_obstacles_positions: Génère les coordonnées (x, y) des obstacles
+        décoratifs en bordure d'écran.
 """
 import pygame
 from classes.VisualAssetManager import VisualAssetManager
+from utils.FunctionalProgramming import side_obstacles_positions
 
 
 class Window:
@@ -141,28 +146,22 @@ class Window:
         self.display.blit(self.big_tree, [200, 200])
         self.display.blit(self.big_skier, [self.width - 400, 200])
 
-    def update_side_limit_fillers(self, speed):
+    def update_side_limit_obstacles(self, speed):
         """Met à jour le décor sur les bords de la piste.
 
         Args:
             speed (int): Vitesse de défilement vertical.
         """
-        for i in range(-1, self.num_rows):
-            x = i * self.spacing + self.dx
-            self.display.blit(self.tree, [self.alignment, x])
-            self.display.blit(self.tree, [self.spacing+self.alignment, x])
-            self.display.blit(
-                self.tree, [(2*self.spacing+self.alignment), x])
-            self.display.blit(
-                self.tree, [(3*self.spacing+self.alignment), x])
-            self.display.blit(
-                self.tree, [self.width-(4*self.spacing-self.alignment), x])
-            self.display.blit(
-                self.tree, [self.width-(3*self.spacing-self.alignment), x])
-            self.display.blit(
-                self.tree, [self.width-(2*self.spacing-self.alignment), x])
-            self.display.blit(
-                self.tree, [self.width-self.spacing+self.alignment, x])
+        positions = side_obstacles_positions(
+            self.spacing,
+            self.alignment,
+            self.width,
+            self.num_rows,
+            self.dx
+        )
+
+        for x, y in positions:
+            self.display.blit(self.tree, (x, y))
 
         self.dx -= speed
         if self.dx <= 0:

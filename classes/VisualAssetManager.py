@@ -3,6 +3,10 @@ Gestionnaire de ressources visuelles pour un jeu Pygame.
 
 Ce module fournit la classe VisualAssetManager qui est
 une sous-classe de la classe AssetManager.
+
+Classes:
+    AssetManager: Fournit des utilitaires simples pour signaler les problèmes
+        de chargement de fichiers (images, sons, polices, etc.)
 """
 import pygame
 from classes.AssetManager import AssetManager

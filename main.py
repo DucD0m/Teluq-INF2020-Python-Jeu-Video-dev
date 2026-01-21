@@ -136,7 +136,7 @@ def main():
             # et des arbres en bordure de fenêtre
             window.draw_player(player)
             window.update_status(game.level, player.lives, player.points)
-            window.update_side_limit_fillers(game.speed)
+            window.update_side_limit_obstacles(game.speed)
 
         # Mise à jour de l'affichage et contrôle du framerate
         window.flip()
