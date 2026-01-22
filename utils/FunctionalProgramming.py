@@ -21,7 +21,7 @@ def add_points(p, dp):
     return p + dp
 
 
-def side_obstacles_positions(spacing, alignment, width, rows, dx):
+def side_obstacles_positions(spacing, alignment, width, rows, dx, nb):
     """Calcule les positions (x, y) des obstacles décoratifs de bordure.
 
     Génère une liste de coordonnées pour les obstacles situés à gauche
@@ -35,13 +35,14 @@ def side_obstacles_positions(spacing, alignment, width, rows, dx):
         width (int): Largeur de la fenêtre de jeu en pixels.
         rows (int): Nombre de rangées d'obstacles.
         dx (int): Décalage vertical pour simuler le défilement.
+        nb (int): Le nombre d'obstacles de chaque côté de la fenêtre.
 
     Returns:
         list[tuple[int, int]]: Liste des coordonnées (x, y) des obstacles.
     """
     # Positions horizontales (X) gauche et droite
-    left_x = [alignment + i * spacing for i in range(4)]
-    right_x = [width - (4 - i) * spacing + alignment for i in range(4)]
+    left_x = [alignment + i * spacing for i in range(nb)]
+    right_x = [width - (nb - i) * spacing + alignment for i in range(nb)]
     x_positions = left_x + right_x
 
     # Positions verticales (Y) pour chaque ligne

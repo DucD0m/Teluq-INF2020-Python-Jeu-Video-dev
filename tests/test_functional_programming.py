@@ -23,16 +23,17 @@ class TestFunctionalExamples(unittest.TestCase):
         width = 400
         rows = 3
         dx = 0
+        nb = 3
 
-        positions = side_obstacles_positions(spacing, alignment, width, rows, dx)
+        positions = side_obstacles_positions(spacing, alignment, width, rows, dx, nb)
 
         # Vérifie le type
         self.assertIsInstance(positions, list)
         self.assertTrue(all(isinstance(pos, tuple) for pos in positions))
         self.assertTrue(all(len(pos) == 2 for pos in positions))
 
-        # Vérifie la longueur : 4 obstacles gauche + 4 obstacles droite par ligne
-        expected_length = 8 * (rows + 2)  # +2 car range(-2, rows)
+        # Vérifie la longueur : obstacles gauche + obstacles droite par ligne
+        expected_length = 2*nb * (rows + 2)  # +2 car range(-2, rows)
         self.assertEqual(len(positions), expected_length)
 
     def test_side_obstacles_positions_dx_offset(self):
@@ -41,8 +42,9 @@ class TestFunctionalExamples(unittest.TestCase):
         width = 200
         rows = 2
         dx = 10
+        nb = 3
 
-        positions = side_obstacles_positions(spacing, alignment, width, rows, dx)
+        positions = side_obstacles_positions(spacing, alignment, width, rows, dx, nb)
 
         # Vérifie que le premier y correspond à row=-1
         y_values = sorted(set(pos[1] for pos in positions))

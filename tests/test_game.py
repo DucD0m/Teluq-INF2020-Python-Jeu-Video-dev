@@ -27,7 +27,7 @@ class TestGame(unittest.TestCase):
         """Vérifie l'état initial du jeu."""
         self.assertFalse(self.game.started)
         self.assertEqual(self.game.level, 1)
-        self.assertEqual(self.game.speed, 2)
+        self.assertEqual(self.game.speed, 1)
 
     # ---------- GAME START ----------
 
@@ -54,7 +54,7 @@ class TestGame(unittest.TestCase):
         result = self.game.restart_game()
         self.assertTrue(result)
         self.assertEqual(self.game.level, 1)
-        self.assertEqual(self.game.speed, 2)
+        self.assertEqual(self.game.speed, 1)
         mock_unpause.assert_called_once()
 
     def test_restart_game_false(self):
@@ -176,7 +176,7 @@ class TestGame(unittest.TestCase):
     def test_update_status(self):
         self.game.update_status(2500)
         self.assertEqual(self.game.level, 3)
-        self.assertEqual(self.game.speed, 4)
+        self.assertEqual(self.game.speed, 2.5)
 
     # ---------- QUIT ----------
 

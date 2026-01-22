@@ -41,7 +41,7 @@ class Game(AssetManager):
         self.started = False
         self.clock = pygame.time.Clock()
         self.level = 1
-        self.speed = 2
+        self.speed = 1
         self.keys = ""
 
         # github.com/RobertGodin/CodePython/tree/master/chapitre8/Son1.wav
@@ -226,7 +226,7 @@ class Game(AssetManager):
             player_points (int): Nombre de points du joueur.
         """
         self.level = player_points // 1000 + 1
-        self.speed = self.level + 1
+        self.speed = self.level/2 + 1
 
     def check_quit_event(self):
         """Vérifie si l'utilisateur a demandé à quitter le jeu.

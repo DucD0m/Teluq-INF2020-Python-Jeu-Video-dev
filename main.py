@@ -140,7 +140,7 @@ def main():
 
         # Mise à jour de l'affichage et contrôle du framerate
         window.flip()
-        game.clock.tick(60)
+        game.clock.tick(120)
 
     game.quit()
 

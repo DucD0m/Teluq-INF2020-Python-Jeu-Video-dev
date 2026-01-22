@@ -45,8 +45,8 @@ class Window:
         self.dx = self.spacing
         self.alignment = -10
         self.num_rows = self.height // self.spacing
-        self.left_limit = 3 * self.spacing
-        self.right_limit = self.width - 5 * self.spacing
+        self.left_limit = 2 * self.spacing
+        self.right_limit = self.width - 4 * self.spacing
         self.white = (255, 255, 255)
         self.snow_color = (200, 200, 255)
 
@@ -157,7 +157,8 @@ class Window:
             self.alignment,
             self.width,
             self.num_rows,
-            self.dx
+            self.dx,
+            3
         )
 
         for x, y in positions:

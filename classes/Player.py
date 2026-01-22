@@ -42,7 +42,7 @@ class Player:
         self.rect.width -= 20
         self.rect.height -= 20
 
-        self.speed = 5
+        self.speed = 3
         self.dx = 0
         self.mx = 0  # Dernière direction horizontale
 
@@ -107,7 +107,7 @@ class Player:
     def vertical_move(self, keys):
         """Gère le déplacement vertical du joueur."""
         if keys["up"]:
-            self.y -= self.speed
+            self.y -= self.speed/2
         if keys["down"]:
             self.y += self.speed
 
