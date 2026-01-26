@@ -39,8 +39,11 @@ class Obstacle:
                 par-dessus cet obstacle.
         """
         self.image = image
+        self.left_limit = left_limit + 50
+        self.right_limit = right_limit - 50
+        self.window_height = height
         self.y = height + random.randint(0, height)
-        self.x = random.randint(left_limit + 50, right_limit - 50)
+        self.x = random.randint(self.left_limit, self.right_limit)
         self.rect = self.image.get_rect(topleft=(self.x, self.y))
         self.rect.width = self.image.get_width() - 20
         self.rect.height = self.image.get_height() - 20
@@ -59,20 +62,17 @@ class Obstacle:
         """Marque l'obstacle comme franchi par le joueur."""
         self.cleared = True
 
-    def update_position(self, height, left_limit, right_limit, speed):
+    def update_position(self, speed):
         """Met à jour la position de l'obstacle.
 
         L'obstacle se déplace vers le haut. Lorsqu'il sort de l'écran,
         il est repositionné en bas avec une position horizontale aléatoire.
 
         Args:
-            height (int): Hauteur de la fenêtre de jeu.
-            left_limit (int): Limite horizontale gauche autorisée.
-            right_limit (int): Limite horizontale droite autorisée.
             speed (int): Vitesse de déplacement vertical.
         """
         self.y -= speed
         if self.y < -self.image.get_height():
             self.cleared = False
-            self.y = height + random.randint(0, height)
-            self.x = random.randint(left_limit + 50, right_limit - 50)
+            self.y = self.window_height + random.randint(0, self.window_height)
+            self.x = random.randint(self.left_limit, self.right_limit)

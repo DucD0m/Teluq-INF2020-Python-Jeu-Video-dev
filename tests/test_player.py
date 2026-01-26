@@ -19,7 +19,7 @@ class TestPlayer(unittest.TestCase):
             topleft=(0, 0), width=50, height=50
         )
 
-        self.player = Player(200, self.image_left, self.image_right)
+        self.player = Player(200, 1400, 100, 1000, self.image_left, self.image_right)
 
     def test_horizontal_move_left_right_no_jump(self):
         keys = {"left": True, "right": False, "up": False, "down": False, "space": False}
@@ -70,14 +70,14 @@ class TestPlayer(unittest.TestCase):
     def test_position_limits(self):
         self.player.x = -100
         self.player.y = -50
-        self.player.position_limits(200, 0, 150)
+        self.player.position_limits()
         self.assertGreaterEqual(self.player.x, 0)
         self.assertGreaterEqual(self.player.y, 0)
         self.player.x = 200
         self.player.y = 300
-        self.player.position_limits(200, 0, 150)
-        self.assertLessEqual(self.player.x, 150)
-        self.assertLessEqual(self.player.y, 150)
+        self.player.position_limits()
+        self.assertLessEqual(self.player.x, 200)
+        self.assertLessEqual(self.player.y, 300)
 
     def test_update_invincibility_and_stop_points(self):
         # Invincibility active, dt < duration

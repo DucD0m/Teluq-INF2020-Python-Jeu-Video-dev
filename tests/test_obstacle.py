@@ -89,12 +89,7 @@ class TestObstacle(unittest.TestCase):
 
         start_y = obstacle.y
 
-        obstacle.update_position(
-            height=600,
-            left_limit=0,
-            right_limit=800,
-            speed=5,
-        )
+        obstacle.update_position(speed=5)
 
         self.assertEqual(obstacle.y, start_y - 5)
 
@@ -112,12 +107,7 @@ class TestObstacle(unittest.TestCase):
         obstacle.cleared = True
 
         with patch("random.randint", side_effect=[50, 200]):
-            obstacle.update_position(
-                height=600,
-                left_limit=0,
-                right_limit=800,
-                speed=5,
-            )
+            obstacle.update_position(speed=5)
 
         self.assertFalse(obstacle.cleared)
         self.assertEqual(obstacle.y, 650)

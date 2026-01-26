@@ -42,6 +42,9 @@ def main():
     window = Window(width, height)
     player = Player(
         window.width,
+        window.height,
+        window.left_limit,
+        window.right_limit,
         window.skier_left,
         window.skier_right
     )
@@ -93,12 +96,7 @@ def main():
             window.display.fill(window.snow_color)
 
             # Mettre à jour le joueur selon les entrées et sa position
-            player.input(
-                game.keys,
-                window.height,
-                window.left_limit,
-                window.right_limit
-            )
+            player.input(game.keys)
             player.update(dt)
 
             # Mettre à jour les obstacles
@@ -124,12 +122,7 @@ def main():
                         player.obstacle_cleared()
                         game.obstacle_cleared()
 
-                obs.update_position(
-                    window.height,
-                    window.left_limit,
-                    window.right_limit,
-                    game.speed
-                )
+                obs.update_position(game.speed)
                 window.draw(obs.image, obs.x, obs.y)
 
             # Affichage du joueur, de l'état de la partie

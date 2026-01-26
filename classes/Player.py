@@ -20,14 +20,21 @@ from utils.FunctionalProgramming import add_points
 class Player:
     """Représente le joueur contrôlé par l'utilisateur."""
 
-    def __init__(self, window_width, image_left, image_right):
+    def __init__(self, window_width, window_height, left_limit, right_limit,
+                 image_left, image_right):
         """Initialise le joueur et ses états de départ.
 
         Args:
             window_width (int): Largeur de la fenêtre de jeu.
+            window_height (int): Hauteur de la fenêtre de jeu.
+            left_limit (int): Limite horizontale gauche autorisée.
+            right_limit (int): Limite horizontale droite autorisée.
             image_left (Surface): Image du joueur orientée vers la gauche.
             image_right (Surface): Image du joueur orientée vers la droite.
         """
+        self.window_height = window_height
+        self.left_limit = left_limit
+        self.right_limit = right_limit
         self.image_left = image_left
         self.image_right = image_right
         self.image = self.image_left
@@ -68,7 +75,7 @@ class Player:
         self.angle = 0.0
         self.scale = 1.0
 
-    def input(self, keys, height, left_limit, right_limit):
+    def input(self, keys):
         """Traite les entrées utilisateur et applique les déplacements.
 
         # pragma: no cover signifie que les lignes associées ne sont
@@ -76,15 +83,11 @@ class Player:
 
         Args:
             keys (dict): Dictionnaire des touches actives.
-            height (int): Hauteur de la fenêtre.
-            left_limit (int): Limite horizontale gauche.
-            right_limit (int): Limite horizontale droite.
         """
         self.horizontal_move(keys)  # pragma: no cover
         self.vertical_move(keys)  # pragma: no cover
         self.jump_move(keys)  # pragma: no cover
-        self.position_limits(
-            height, left_limit, right_limit)  # pragma: no cover
+        self.position_limits()  # pragma: no cover
 
     def horizontal_move(self, keys):
         """Gère le déplacement horizontal du joueur."""
@@ -118,10 +121,13 @@ class Player:
             self.jump_time = 0.0
             self.jump_x = self.x
 
-    def position_limits(self, height, left_limit, right_limit):
+    def position_limits(self):
         """Empêche le joueur de sortir de la zone jouable."""
-        self.x = max(left_limit, min(self.x, right_limit))
-        self.y = max(0, min(self.y, height - self.image.get_height()))
+        self.x = max(self.left_limit, min(self.x, self.right_limit))
+        self.y = max(0, min(
+                self.y, self.window_height - self.image.get_height()
+            )
+        )
 
     def update(self, dt):
         """Met à jour l'état du joueur.
