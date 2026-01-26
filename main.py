@@ -7,7 +7,7 @@ exécute la boucle principale du jeu qui gère :
     - La mise à jour de l'état du jeu et du joueur
     - La détection de collision et la gestion des obstacles
     - L'affichage du joueur, des obstacles et de l'interface
-    - Le contrôle du nombre d'images par seconde (60 FPS)
+    - Le contrôle du nombre d'images par seconde (FPS)
 
 Classes:
     Game : Gestion de l'état du jeu, des entrées, des collisions,
@@ -79,25 +79,25 @@ def main():
         if (quit := game.check_quit_event()):
             continue
 
-        game.update_status(player.points)
-        game.update_key_pressed()
+        game.update_level(player.points)
+        game.get_key_pressed()
 
         if not game.started:
             window.show_start_screen()
-            game.game_started()
+            game.check_game_started()
 
         elif player.lives == 0:
             window.show_game_over_screen(game.level, player.points)
             if game.restart_game():
                 player.reset()
-                player.update(dt)
+                player.update_state(dt)
 
         else:
             window.display.fill(window.snow_color)
 
             # Mettre à jour le joueur selon les entrées et sa position
             player.input(game.keys)
-            player.update(dt)
+            player.update_state(dt)
 
             # Mettre à jour les obstacles
             for obs in obstacles:
@@ -129,7 +129,7 @@ def main():
             # et des arbres en bordure de fenêtre
             window.draw_player(player)
             window.update_status(game.level, player.lives, player.points)
-            window.update_side_limit_obstacles(game.speed)
+            window.update_side_obstacles(game.speed)
 
         # Mise à jour de l'affichage et contrôle du framerate
         window.flip()

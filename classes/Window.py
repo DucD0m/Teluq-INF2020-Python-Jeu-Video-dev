@@ -146,7 +146,7 @@ class Window:
         self.display.blit(self.big_tree, [200, 200])
         self.display.blit(self.big_skier, [self.width - 400, 200])
 
-    def update_side_limit_obstacles(self, speed):
+    def update_side_obstacles(self, speed):
         """Met à jour le décor sur les bords de la piste.
 
         Args:

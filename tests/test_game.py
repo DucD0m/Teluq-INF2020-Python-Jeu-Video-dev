@@ -35,14 +35,14 @@ class TestGame(unittest.TestCase):
     def test_game_started_true(self, mock_play):
         """Test le démarrage du jeu avec Entrée pressée."""
         self.game.keys = {"return": True}
-        self.game.game_started()
+        self.game.check_game_started()
         self.assertTrue(self.game.started)
         mock_play.assert_called_once_with(-1)
 
     def test_game_started_false(self):
         """Test que le jeu ne démarre pas si Entrée n'est pas pressée."""
         self.game.keys = {"return": False}
-        self.game.game_started()
+        self.game.check_game_started()
         self.assertFalse(self.game.started)
 
     # ---------- RESTART ----------
@@ -74,7 +74,7 @@ class TestGame(unittest.TestCase):
         pressed[pygame.K_RETURN] = True
 
         mock_pressed.return_value = pressed
-        self.game.update_key_pressed()
+        self.game.get_key_pressed()
 
         self.assertTrue(self.game.keys["left"])
         self.assertTrue(self.game.keys["right"])
@@ -174,7 +174,7 @@ class TestGame(unittest.TestCase):
     # ---------- STATUS ----------
 
     def test_update_status(self):
-        self.game.update_status(2500)
+        self.game.update_level(2500)
         self.assertEqual(self.game.level, 3)
         self.assertEqual(self.game.speed, 2.5)
 

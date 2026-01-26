@@ -91,7 +91,7 @@ class Game(AssetManager):
             self.music = False
             super().print_file_missing_error(music_path)
 
-    def game_started(self):
+    def check_game_started(self):
         """Démarre la partie lorsque la touche Entrée est pressée."""
         if self.keys["return"]:
             self.started = True
@@ -112,7 +112,7 @@ class Game(AssetManager):
 
         return False
 
-    def update_key_pressed(self):
+    def get_key_pressed(self):
         """Met à jour l'état des touches clavier pressées."""
         pressed = pygame.key.get_pressed()
         self.keys = {
@@ -219,7 +219,7 @@ class Game(AssetManager):
         if self.sound_woohoo:
             self.sound_woohoo.play()
 
-    def update_status(self, player_points):
+    def update_level(self, player_points):
         """Met à jour le niveau et la vitesse du jeu.
 
         Args:

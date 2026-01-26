@@ -87,7 +87,7 @@ class Player:
         self.horizontal_move(keys)  # pragma: no cover
         self.vertical_move(keys)  # pragma: no cover
         self.jump_move(keys)  # pragma: no cover
-        self.position_limits()  # pragma: no cover
+        self.set_position_limits()  # pragma: no cover
 
     def horizontal_move(self, keys):
         """Gère le déplacement horizontal du joueur."""
@@ -121,7 +121,7 @@ class Player:
             self.jump_time = 0.0
             self.jump_x = self.x
 
-    def position_limits(self):
+    def set_position_limits(self):
         """Empêche le joueur de sortir de la zone jouable."""
         self.x = max(self.left_limit, min(self.x, self.right_limit))
         self.y = max(0, min(
@@ -129,7 +129,7 @@ class Player:
             )
         )
 
-    def update(self, dt):
+    def update_state(self, dt):
         """Met à jour l'état du joueur.
 
         Args:

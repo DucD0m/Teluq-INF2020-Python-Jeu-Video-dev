@@ -70,12 +70,12 @@ class TestPlayer(unittest.TestCase):
     def test_position_limits(self):
         self.player.x = -100
         self.player.y = -50
-        self.player.position_limits()
+        self.player.set_position_limits()
         self.assertGreaterEqual(self.player.x, 0)
         self.assertGreaterEqual(self.player.y, 0)
         self.player.x = 200
         self.player.y = 300
-        self.player.position_limits()
+        self.player.set_position_limits()
         self.assertLessEqual(self.player.x, 200)
         self.assertLessEqual(self.player.y, 300)
 
@@ -142,7 +142,7 @@ class TestPlayer(unittest.TestCase):
         self.player.jumping = True
         self.player.invincible = True
         self.player.stop_points = True
-        self.player.update(0.1)  # dt = 0.1
+        self.player.update_state(0.1)  # dt = 0.1
 
     def test_reset(self):
         self.player.x = 999

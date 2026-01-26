@@ -88,17 +88,17 @@ class TestWindowFull(unittest.TestCase):
         except Exception as e:
             self.fail(f"show_game_over_screen raised an exception {e}")
 
-    def test_update_side_limit_obstacles(self):
+    def test_update_side_obstacles(self):
         """Teste update_side_limit_obstacles sans erreur."""
         try:
-            self.window.update_side_limit_obstacles(speed=5)
+            self.window.update_side_obstacles(speed=5)
         except Exception as e:
             self.fail(f"update_side_limit_obstacles raised an exception {e}")
 
-    def test_update_side_limit_obstacles_dx_reset(self):
+    def test_update_side_obstacles_dx_reset(self):
         """Teste la branche où self.dx <= 0 et doit être réinitialisé."""
         self.window.dx = 2  # petit dx
-        self.window.update_side_limit_obstacles(speed=5)  # dx - 5 <= 0 déclenche la branche
+        self.window.update_side_obstacles(speed=5)  # dx - 5 <= 0 déclenche la branche
         # Vérifie que dx a été réajusté
         self.assertGreater(self.window.dx, 0)
 
