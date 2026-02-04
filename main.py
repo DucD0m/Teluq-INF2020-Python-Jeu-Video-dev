@@ -76,7 +76,7 @@ def main():
     while not quit:
         dt = game.clock.get_time() / 1000  # Temps écoulé en secondes
 
-        if (quit := game.check_quit_event()):
+        if quit := game.check_quit_event():
             continue
 
         game.update_level(player.points)
